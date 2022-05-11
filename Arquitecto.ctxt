@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Arquitecto
+comment0.text=\n\ La\ clase\ Arquitecto\ modela\ los\ arquitectos\ del\ estudio\ de\ arquitectura\ y\ hereda\n\ de\ la\ clase\ Empleado.\n\n\ @author\ Esteban\ Calvete\ Iglesias\n\ @version\ 1.0\n
+comment1.params=name\ telefono
+comment1.target=Arquitecto(java.lang.String,\ int)
+comment1.text=\n\ Constructor\ para\ objetos\ de\ clase\ Arquitecto\n\ \n\ @param\ \ name\ nombre\ de\ la\ persona\n\ @param\ \ telefono\ Tel\u00E9fono\ de\ contacto\n
+comment2.params=
+comment2.target=void\ printClientesAsignados()
+comment2.text=\n\ Visualizaci\u00F3n\ de\ datos\ clientes\ asignados\n
+numComments=3

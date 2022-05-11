@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Contable
+comment0.text=\n\ La\ clase\ Contable\ modela\ los\ contables\ del\ estudio\ de\ arquitectura,\ hereda\ de\ la\n\ clase\ Empleado.\n\n\ @author\ Esteban\ Calvete\ Iglesias\n\ @version\ 1.0\n
+comment1.params=name\ telefono
+comment1.target=Contable(java.lang.String,\ int)
+comment1.text=\n\ Constructor\ para\ objetos\ de\ clase\ Contable\n\ \n\ @param\ \ name\ nombre\ de\ la\ persona\n\ @param\ \ telefono\ Tel\u00E9fono\ de\ contacto\n
+numComments=2

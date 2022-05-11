@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Aparejador
+comment0.text=\n\ La\ clase\ Aparejador\ modela\ los\ aparejadores\ del\ estudio\ de\ arquitectura\ y\n\ hereda\ de\ la\ clase\ Empleado.\n\n\ @author\ Esteban\ Calvete\ Iglesias\n\ @version\ 1.0\n
+comment1.params=name\ telefono
+comment1.target=Aparejador(java.lang.String,\ int)
+comment1.text=\n\ Constructor\ para\ objetos\ de\ clase\ Aparejador\n\ \n\ @param\ \ name\ nombre\ de\ la\ persona\n\ @param\ \ telefono\ Tel\u00E9fono\ de\ contacto\n
+numComments=2

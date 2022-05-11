@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Residencial
+comment0.text=\n\ La\ clase\ Residencial\ modela\ los\ proyectos\ residenciales\ de\ edificios\ y\n\ viviendas\ unifamiliares\ y\ hereda\ de\ la\ clase\ Proyecto.\n\n\ @author\ Esteban\ Calvete\ Iglesias\n\ @version\ 1.0\n
+comment1.params=nombre\ year\ month\ day\ direccion\ supTerreno\ supEdificio\ noPlantas\ noHabitaciones\ noBanos\ esComunitario
+comment1.target=Residencial(java.lang.String,\ int,\ int,\ int,\ java.lang.String,\ int,\ int,\ int,\ int,\ int,\ boolean)
+comment1.text=\n\ Constructor\ para\ objetos\ de\ clase\ Residencial\n\ \n\ @param\ \ nombre\ Nombre\ del\ proyecto\n\ @param\ \ year\ A\u00F1o\ de\ solicitud\ del\ proyecto\n\ @param\ \ month\ Mes\ de\ solicitud\ del\ proyecto\n\ @param\ \ day\ D\u00EDa\ de\ solicitud\ del\ proyecto\n\ @param\ \ direccion\ Direcci\u00F3n\ de\ la\ obra\n\ @param\ \ supTerreno\ Superficie\ del\ terreno\ en\ m2\n\ @param\ \ supEdificio\ Superficie\ del\ edificio\ en\ m2\n\ @param\ \ noPlantas\ N\u00FAmero\ de\ plantas\ del\ edificio\n\ @param\ \ noHabitaciones\ N\u00FAmero\ de\ habitaciones\n\ @param\ \ noBanos\ N\u00FAmero\ de\ banos\n\ @param\ \ esComunitario\ Finalidad\ comunitaria\ del\ proyecto\:\ "true"\ o\ "false"\n
+numComments=2

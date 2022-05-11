@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Empleado
+comment0.text=\n\ La\ clase\ Empleado\ modela\ los\ empleados\ del\ estudio\ de\ arquitectura\ y\ hereda\n\ de\ la\ clase\ Persona.\n\n\ @author\ Esteban\ Calvete\ Iglesias\n\ @version\ 1.0\n
+comment1.params=name\ telefono\ tipoEmpleado
+comment1.target=Empleado(java.lang.String,\ int,\ java.lang.String)
+comment1.text=\n\ Constructor\ para\ objetos\ de\ clase\ Empleado\n\ \n\ @param\ \ name\ Nombre\ del\ empleado\n\ @param\ \ telefono\ Tel\u00E9fono\ del\ empleado\n\ @param\ \ tipoEmpleado\ Tipo\ de\ empleado\n
+comment2.params=
+comment2.target=java.lang.String\ getNumeroEmpleado()
+comment2.text=\n\ Getter\ de\ n\u00FAmero\ de\ empleado\n
+comment3.params=
+comment3.target=Estudio\ getEstudio()
+comment3.text=\n\ Getter\ de\ estudio\ asignado\n
+comment4.params=
+comment4.target=java.lang.String\ getTipoEmpleado()
+comment4.text=\n\ Getter\ de\ tipo\ de\ empleado\n
+comment5.params=estudio
+comment5.target=void\ setEstudio(Estudio)
+comment5.text=\n\ M\u00E9todo\ de\ asignaci\u00F3n\ de\ estudio\ al\ empleado\n
+comment6.params=
+comment6.target=void\ removeEstudio()
+comment6.text=\n\ M\u00E9todo\ de\ eliminaci\u00F3n\ de\ estudio\ asignado\n
+numComments=7
