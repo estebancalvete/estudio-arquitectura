@@ -28,6 +28,7 @@ public class Proyecto
     private String direccion;
     private ArrayList<Certificado> certificados;
     private boolean esComunitario;
+    private boolean esResidencial;
     
     // MARK - Constructores
     /**
@@ -39,9 +40,10 @@ public class Proyecto
      * @param day Día de solicitud del proyecto
      * @param direccion Dirección del proyecto
      * @param esComunitario Finalidad comunitaria del proyecto: "true" o "false"
+     * @param esResidencial Finalidad residencial del proyecto: "true" o "false"
      */
     public Proyecto(String nombre, int year, int month, int day, String direccion,
-                    boolean esComunitario)
+                    boolean esComunitario, boolean esResidencial)
     {
         NUMERO_PROYECTO = GeneradorNumeros.generaNumeroProyecto();
         certificados = new ArrayList<Certificado>();
@@ -51,34 +53,15 @@ public class Proyecto
         estaContratado = false;
         estaFinalizado = false;
         this.esComunitario = esComunitario;
+        this.esResidencial = esResidencial;
     }
     
     // MARK - Métodos públicos
-    /**
-     * Setter de empleados que realizarán el proyecto. Se añade la fecha prevista
-     * de entrega y el proyecto se considera contratado
-     *
-     * @param  arquitecto Arquitecto que realizará el proyecto
-     * @param  aparejador Aparejador que desarrollará el proyecto
-     * @param  contable Contable que gestionará las finanzas
-     * @param  year Año de entrega estimada del proyecto
-     * @param  month Mes de entrega estimada del proyecto
-     * @param  day Dia de entrega estimada del proyecto
-     */
-    public void setEmpleadosProyecto(Arquitecto arquitecto, Aparejador aparejador,
-                                     Contable contable, int year, int month,
-                                     int day)
-    {
-        this.arquitecto = arquitecto;
-        this.aparejador = aparejador;
-        this.contable = contable;
-        fechaEntregaProyecto = new Date(year, month, day);
-        estaContratado = true;
-        printConfirmacionEmpleados();
-    }
     
     /**
      * Getter del número de proyecto
+     * 
+     * @return String con el número de proyecto
      */
     public String getId()
     {
@@ -86,7 +69,9 @@ public class Proyecto
     }
     
     /**
-     * Getter del tipo de proyecto
+     * Getter de esComunitario. Indica si el proyecto es comunitario
+     * 
+     * @retrun boolean de confirmación de si el proyecto es comunitario
      */
     public boolean getComunitario()
     {
@@ -94,7 +79,19 @@ public class Proyecto
     }
     
     /**
+     * Getter de esResidencial. Indica si el proyecto es residencial
+     * 
+     * @return boolean de confirmación de si el proyecto es residencial
+     */
+    public boolean getEsResidencial()
+    {
+        return esResidencial;
+    }
+    
+    /**
      * Getter de fecha de entrega de obra
+     * 
+     * @return Date indicativo de la fecha de entrega de obra
      */
     public Date getFechaEntregaObra()
     {
@@ -103,6 +100,8 @@ public class Proyecto
     
     /**
      * Getter del nombre de proyecto
+     * 
+     * @return String con el nombre del proyecto
      */
     public String getNombre()
     {
@@ -111,6 +110,8 @@ public class Proyecto
     
     /**
      * Getter de arquitecto
+     * 
+     * @return Objeto Arquitecto asociado al proyecto
      */
     public Arquitecto getArquitecto()
     {
@@ -119,6 +120,8 @@ public class Proyecto
     
     /**
      * Getter de aparejador
+     * 
+     * @return Objeto Aparejador asociado al proyecto
      */
     public Aparejador getAparejador()
     {
@@ -126,7 +129,59 @@ public class Proyecto
     }
     
     /**
+     * Getter de contable
+     * 
+     * @return Objeto Contable asociado al proyecto
+     */
+    public Contable getContable()
+    {
+        return contable;
+    }
+    
+    /**
+     * Getter de cliente
+     * 
+     * @return Objeto Cliente asociado al proyecto
+     */
+    public Cliente getCliente()
+    {
+        return cliente;
+    }
+    
+    /**
+     * Getter de finalizado. Indica si el proyecto está finalizado
+     * 
+     * @return boolean de confirmación de si el proyecto se encuentra finalizado
+     */
+    public boolean getFinalizado()
+    {
+        return estaFinalizado;
+    }
+    
+    /**
+     * Getter de fecha de entrega del proyecto
+     * 
+     * @return Objeto Date de fecha de entrega del proyecto
+     */
+    public Date getFechaEntregaProyecto()
+    {
+        return fechaEntregaProyecto;
+    }
+    
+    /**
+     * Getter de fecha de inicio de obra
+     * 
+     * @return Objeto Date de fecha de inicio de obra
+     */
+    public Date getFechaInicioObra()
+    {
+        return fechaInicioObra;
+    }
+    
+    /**
      * Getter del ArrayList de certificados asociados al proyecto
+     * 
+     * @return ArrayList de certificados asociados al proyecto
      */
     public ArrayList<Certificado> getCertificados()
     {
@@ -134,16 +189,28 @@ public class Proyecto
     }
     
     /**
-     * Método de adición de certificado al histórico del proyecto
+     * Setter de empleados que realizarán el proyecto
+     * El proyecto se considera contratado
+     *
+     * @param arquitecto Arquitecto que realizará el proyecto
+     * @param aparejador Aparejador que desarrollará el proyecto
+     * @param contable Contable que gestionará las finanzas
      */
-    public void addCertificado(Certificado certificado) {
-        certificados.add(certificado);
+    public void setEmpleadosProyecto(Arquitecto arquitecto,
+                                     Aparejador aparejador,
+                                     Contable contable)
+    {
+        this.arquitecto = arquitecto;
+        this.aparejador = aparejador;
+        this.contable = contable;
+        estaContratado = true;
+        printConfirmacionEmpleados();
     }
     
     /**
      * Setter de cliente asociado al proyecto
      * 
-     * @param  cliente Cliente asociado al proyecto
+     * @param cliente Cliente asociado al proyecto
      */
     public void setCliente(Cliente cliente)
     {
@@ -151,22 +218,9 @@ public class Proyecto
     }
     
     /**
-     * Función de finalización de obra
+     * Setter de presupuesto de obra
      * 
-     * @param  year Año de finalización de la obra
-     * @param  month Mes de finalización de la obra
-     * @param  day Día de finalización de la obra
-     */
-    public void finalizarObra(int year, int month, int day)
-    {
-        fechaEntregaObra = new Date(year, month, day);
-        estaFinalizado = true;
-    }
-    
-    /**
-     * Función setter de presupuesto de obra
-     * 
-     * @param  presupuesto Presupuesto para el desarrollo del proyecto
+     * @param presupuesto Presupuesto para el desarrollo del proyecto
      */
     public void setPresupuesto(double presupuesto)
     {
@@ -174,9 +228,9 @@ public class Proyecto
     }
     
     /**
-     * Función setter de coste de obra
+     * Setter de coste de obra
      * 
-     * @param  coste Coste de desarrollo del proyecto
+     * @param coste Coste de desarrollo del proyecto
      */
     public void setCoste(double coste)
     {
@@ -184,9 +238,9 @@ public class Proyecto
     }
     
     /**
-     * Función setter de duración prevista de obra
+     * Setter de duración prevista de obra
      * 
-     * @param  duracionPrevista Duración prevista de obra en días
+     * @param duracionPrevista Duración prevista de obra en días
      */
     public void setDuracionPrevista(int duracionPrevista)
     {
@@ -194,32 +248,70 @@ public class Proyecto
     }
     
     /**
-     * Función setter de fecha de inicio de obra
+     * Setter de fecha de entrega de proyecto
      * 
-     * @param  year Año de inicio de obra
-     * @param  month Mes de inicio de obra
-     * @param  day Día de inicio de obra
+     * @param year Año de inicio de obra
+     * @param month Mes de inicio de obra
+     * @param day Día de inicio de obra
      */
-    public void iniciarObra(int year, int month, int day)
+    public void setFechaEntregaProyecto(int year, int month, int day)
     {
-        this.fechaInicioObra = new Date(year, month, day);
+        fechaEntregaProyecto = new Date(year, month, day);
+    }
+    
+    /**
+     * Setter de fecha de inicio de obra
+     * 
+     * @param year Año de inicio de obra
+     * @param month Mes de inicio de obra
+     * @param day Día de inicio de obra
+     */
+    public void setFechaInicioObra(int year, int month, int day)
+    {
+        fechaInicioObra = new Date(year, month, day);
+    }
+    
+    /**
+     * Setter de fecha de entrega de obra
+     * 
+     * @param year Año de entrega de obra
+     * @param month Mes de entrega de obra
+     * @param day Día de entrega de obra
+     */
+    public void setFechaEntregaObra(int year, int month, int day)
+    {
+        fechaEntregaObra = new Date(year, month, day);
+    }
+    
+    /**
+     * Setter de obra finalizada
+     */
+    public void setEstaFinalizado()
+    {
+        estaFinalizado = true;
+    }
+    
+    /**
+     * Método de adición de certificado al histórico del proyecto
+     * 
+     * @param certificado Certificado a asociar al proyecto
+     */
+    public void addCertificado(Certificado certificado) {
+        certificados.add(certificado);
     }
     
     // MARK - Métodos privados
     /**
      * Método privado de impresión de mensaje de confirmación de adición de
-     * empleados al proyecto y su fecha prevista de entrega
+     * empleados al proyecto
      */
     private void printConfirmacionEmpleados()
     {
         System.out.println("El proyecto número #" + NUMERO_PROYECTO);
-        System.out.println("Se ha contratado correctamente los siguientes datos");
+        System.out.println("Se ha contratado correctamente con los siguientes");
+        System.out.println("empleados asignados:");
         System.out.println("Arquitecto: " + arquitecto.getName());
         System.out.println("Aparejador: " + aparejador.getName());
         System.out.println("Contable: " + contable.getName());
-        System.out.println("Fecha estimada de entrega:");
-        System.out.println(fechaEntregaProyecto.getDay() + "/" +
-                           fechaEntregaProyecto.getMonth() + "/" +
-                           fechaEntregaProyecto.getYear());
     }
 }

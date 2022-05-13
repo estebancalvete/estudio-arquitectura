@@ -31,7 +31,7 @@ public class GeneradorNumeros
     /**
      * Función generadora de número de cliente
      *
-     * @return Un número consecutivo de cliente
+     * @return String de un número consecutivo de cliente
      */
     public static String generaNumeroCliente()
     {
@@ -42,7 +42,7 @@ public class GeneradorNumeros
     /**
      * Función generadora de número de empleado
      *
-     * @return Un número consecutivo de empleado
+     * @return String de un número consecutivo de empleado
      */
     public static String generaNumeroEmpleado()
     {
@@ -53,7 +53,7 @@ public class GeneradorNumeros
     /**
      * Función generadora de número de proyecto
      *
-     * @return Un número consecutivo de proyecto
+     * @return String de un número consecutivo de proyecto
      */
     public static String generaNumeroProyecto()
     {
@@ -64,7 +64,7 @@ public class GeneradorNumeros
     /**
      * Función generadora de número de certificado
      *
-     * @return Un número consecutivo de certificado
+     * @return String de un número consecutivo de certificado
      */
     public static String generaNumeroCertificado()
     {

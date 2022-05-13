@@ -17,8 +17,8 @@ public class Persona
     /**
      * Constructor para objetos de clase Persona
      * 
-     * @param  nombre Nombre de la persona
-     * @param  telefono Teléfono de contacto de la persona
+     * @param nombre Nombre de la persona
+     * @param telefono Teléfono de contacto de la persona
      */
     public Persona(String name, int telefono)
     {
@@ -49,11 +49,21 @@ public class Persona
     }
     
     /**
+     * Método para saber si el usuario está dado de alta en el sistema
+     * 
+     * @return boolean de usuario activo en el sistema
+     */
+    public boolean getActivo()
+    {
+        return activo;
+    }
+    
+    /**
      * Método setter de nombre de la persona
      * 
-     * @param  name Nuevo nombre de la persona
+     * @param name Nuevo nombre de la persona
      */
-    public void setNombre(String name)
+    public void setName(String name)
     {
         this.name = name;
     }
@@ -61,7 +71,7 @@ public class Persona
     /**
      * Método setter de número de teléfono de la persona
      * 
-     * @param  teléfono Nuevo número de teléfono de la persona
+     * @param teléfono Nuevo número de teléfono de la persona
      */
     public void setTelefono(int telefono)
     {
@@ -82,15 +92,5 @@ public class Persona
     public void setInactivo()
     {
         activo = false;
-    }
-    
-    /**
-     * Método para saber si el usuario está dado de alta en el sistema
-     * 
-     * @return  boolean de usuario activo en el sistema
-     */
-    public boolean getActivo()
-    {
-        return activo;
     }
 }

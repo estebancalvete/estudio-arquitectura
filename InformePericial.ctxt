@@ -3,5 +3,5 @@ comment0.target=InformePericial
 comment0.text=\n\ La\ clase\ InformePericial\ modela\ los\ certificados\ de\ informes\ periciales\n\ desarrollados\ por\ el\ estudio\ de\ arquitectura,\ hereda\ de\ la\ clase\n\ Certificado.\n\n\ @author\ Esteban\ Calvete\ Iglesias\n\ @version\ 1.0\n
 comment1.params=year\ month\ day\ proyecto
 comment1.target=InformePericial(int,\ int,\ int,\ Proyecto)
-comment1.text=\n\ Constructor\ para\ objetos\ de\ clase\ InformePericial\n\ \n\ @param\ \ year\ A\u00F1o\ de\ solicitud\n\ @param\ \ month\ Mes\ de\ solicitud\n\ @param\ \ day\ D\u00EDa\ de\ solicitud\n\ @param\ \ proyecto\ Proyecto\ arquitect\u00F3nico\ al\ que\ se\ aplica\ el\ certificado\n
+comment1.text=\n\ Constructor\ para\ objetos\ de\ clase\ InformePericial\n\ \n\ @param\ year\ A\u00F1o\ de\ solicitud\n\ @param\ month\ Mes\ de\ solicitud\n\ @param\ day\ D\u00EDa\ de\ solicitud\n\ @param\ proyecto\ Proyecto\ arquitect\u00F3nico\ al\ que\ se\ aplica\ el\ certificado\n
 numComments=2

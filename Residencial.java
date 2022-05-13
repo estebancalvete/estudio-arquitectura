@@ -19,24 +19,24 @@ public class Residencial extends Proyecto
     /**
      * Constructor para objetos de clase Residencial
      * 
-     * @param  nombre Nombre del proyecto
-     * @param  year Año de solicitud del proyecto
-     * @param  month Mes de solicitud del proyecto
-     * @param  day Día de solicitud del proyecto
-     * @param  direccion Dirección de la obra
-     * @param  supTerreno Superficie del terreno en m2
-     * @param  supEdificio Superficie del edificio en m2
-     * @param  noPlantas Número de plantas del edificio
-     * @param  noHabitaciones Número de habitaciones
-     * @param  noBanos Número de banos
-     * @param  esComunitario Finalidad comunitaria del proyecto: "true" o "false"
+     * @param nombre Nombre del proyecto
+     * @param year Año de solicitud del proyecto
+     * @param month Mes de solicitud del proyecto
+     * @param day Día de solicitud del proyecto
+     * @param direccion Dirección de la obra
+     * @param supTerreno Superficie del terreno en m2
+     * @param supEdificio Superficie del edificio en m2
+     * @param noPlantas Número de plantas del edificio
+     * @param noHabitaciones Número de habitaciones
+     * @param noBanos Número de banos
+     * @param esComunitario Finalidad comunitaria del proyecto: "true" o "false"
      */
     public Residencial(String nombre, int year, int month, int day,
                        String direccion, int supTerreno, int supEdificio,
                        int noPlantas, int noHabitaciones, int noBanos,
                        boolean esComunitario)
     {
-        super(nombre, year, month, day, direccion, esComunitario);
+        super(nombre, year, month, day, direccion, esComunitario, true);
         this.supTerreno = supTerreno;
         this.supEdificio = supEdificio;
         this.noPlantas = noPlantas;

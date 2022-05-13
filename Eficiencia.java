@@ -16,21 +16,21 @@ public class Eficiencia extends Certificado
     /**
      * Constructor para objetos de clase Eficiencia
      * 
-     * @param  year Año de solicitud
-     * @param  month Mes de solicitud
-     * @param  day Día de solicitud
-     * @param  proyecto Proyecto arquitectónico al que se aplica el certificado
+     * @param year Año de solicitud
+     * @param month Mes de solicitud
+     * @param day Día de solicitud
+     * @param proyecto Proyecto arquitectónico al que se aplica el certificado
      */
     public Eficiencia(int year, int month, int day, Proyecto proyecto)
     {
-        super(year, month, day, proyecto);
+        super(year, month, day, proyecto, "Eficiencia");
     }
     
     // MARK - Métodos públicos
     /**
      * Setter de categoría del certificado
      * 
-     * @param  categoria Categoría del certificado (A, B, C, D, E, F, G)
+     * @param categoria Categoría del certificado (A, B, C, D, E, F, G)
      */
     public void setCategoria(Character categoria)
     {

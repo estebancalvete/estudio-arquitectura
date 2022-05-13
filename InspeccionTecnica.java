@@ -16,23 +16,23 @@ public class InspeccionTecnica extends Certificado
     /**
      * Constructor para objetos de clase InspeccionTecnica
      * 
-     * @param  year Año de solicitud
-     * @param  month Mes de solicitud
-     * @param  day Día de solicitud
-     * @param  proyecto Proyecto comunitario al que se aplica el certificado
+     * @param year Año de solicitud
+     * @param month Mes de solicitud
+     * @param day Día de solicitud
+     * @param proyecto Proyecto comunitario al que se aplica el certificado
      */
     public InspeccionTecnica(int year, int month, int day, Proyecto proyecto)
     {
-        super(year, month, day, proyecto);
+        super(year, month, day, proyecto, "Inspección Técnica");
     }
     
     // MARK - Métodos públicos
     /**
      * Setter de fecha de visita del aparejador
      * 
-     * @param  year Año de visita del aparejador
-     * @param  month Mes de visita del aparejador
-     * @param  day Día de visita del aparejador
+     * @param year Año de visita del aparejador
+     * @param month Mes de visita del aparejador
+     * @param day Día de visita del aparejador
      */
     public void setFechaVisitaAparejador(int year, int month, int day)
     {

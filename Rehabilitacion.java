@@ -15,18 +15,18 @@ public class Rehabilitacion extends Proyecto
     /**
      * Constructor de objetos de la clase Rehabilitacion
      * 
-     * @param  nombre Nombre del proyecto
-     * @param  year Año de solicitud del proyecto
-     * @param  month Mes de solicitud del proyecto
-     * @param  day Día de solicitud del proyecto
-     * @param  direccion Direccion de realización del proyecto
-     * @param  supReformar Superficie a reformar
-     * @param  esComunitario Finalidad comunitaria del proyecto: "true" o "false"
+     * @param nombre Nombre del proyecto
+     * @param year Año de solicitud del proyecto
+     * @param month Mes de solicitud del proyecto
+     * @param day Día de solicitud del proyecto
+     * @param direccion Direccion de realización del proyecto
+     * @param supReformar Superficie a reformar
+     * @param esComunitario Finalidad comunitaria del proyecto: "true" o "false"
      */
     public Rehabilitacion(String nombre, int year, int month, int day,
                           String direccion, int supReformar, boolean esComunitario)
     {
-        super(nombre, year, month, day, direccion, esComunitario);
+        super(nombre, year, month, day, direccion, esComunitario, false);
         this.supReformar = supReformar;
     }
     

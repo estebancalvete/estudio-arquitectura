@@ -17,21 +17,21 @@ public class NoResidencial extends Proyecto
     /**
      * Constructor para objetos de clase NoResidencial
      * 
-     * @param  nombre Nombre del proyecto
-     * @param  year Año de solicitud del proyecto
-     * @param  month Mes de solicitud del proyecto
-     * @param  day Día de solicitud del proyecto
-     * @param  direccion Dirección de la edificación
-     * @param  supTerreno Superficie del terreno
-     * @param  supEdificio Superficie de la edificación
-     * @param  finalidad Finalidad de la edificación
-     * @param  esComunitario Finalidad comunitaria del proyecto: "true" o "false"
+     * @param nombre Nombre del proyecto
+     * @param year Año de solicitud del proyecto
+     * @param month Mes de solicitud del proyecto
+     * @param day Día de solicitud del proyecto
+     * @param direccion Dirección de la edificación
+     * @param supTerreno Superficie del terreno
+     * @param supEdificio Superficie de la edificación
+     * @param finalidad Finalidad de la edificación
+     * @param esComunitario Finalidad comunitaria del proyecto: "true" o "false"
      */
     public NoResidencial(String nombre, int year, int month, int day,
                          String direccion, int supTerreno, int supEdificio,
                          String finalidad, boolean esComunitario)
     {
-        super(nombre, year, month, day, direccion, esComunitario);
+        super(nombre, year, month, day, direccion, esComunitario, false);
         this.supTerreno = supTerreno;
         this.supEdificio = supEdificio;
         this.finalidad = finalidad;

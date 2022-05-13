@@ -31,6 +31,8 @@ public class Empleado extends Persona
     // MARK - Métodos públicos
     /**
      * Getter de número de empleado
+     * 
+     * @return String de número de empleado
      */
     public String getNumeroEmpleado()
     {
@@ -39,6 +41,8 @@ public class Empleado extends Persona
     
     /**
      * Getter de estudio asignado
+     * 
+     * @return Estudio asignado al empleado
      */
     public Estudio getEstudio()
     {
@@ -47,6 +51,8 @@ public class Empleado extends Persona
     
     /**
      * Getter de tipo de empleado
+     * 
+     * @return String del cargo del empleado
      */
     public String getTipoEmpleado()
     {
@@ -55,6 +61,8 @@ public class Empleado extends Persona
     
     /**
      * Método de asignación de estudio al empleado
+     * 
+     * @param estudio Estudio a asignar al empleado
      */
     public void setEstudio(Estudio estudio)
     {

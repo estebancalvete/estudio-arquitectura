@@ -17,8 +17,8 @@ public class Cliente extends Persona
     /**
      * Constructor for objects of class Cliente
      * 
-     * @param name nombre del cliente
-     * @param  telefono Teléfono de contacto del cliente
+     * @param name Nombre del cliente
+     * @param telefono Teléfono de contacto del cliente
      * 
      */
     public Cliente(String name, int telefono)
@@ -31,34 +31,31 @@ public class Cliente extends Persona
     
     // MARK - Métodos públicos
     /**
-     * Getter de número de cliente
-     * 
-     * @return  Número de cliente
-     */
-    public String getNumeroCliente()
-    {
-        return NUMERO_CLIENTE;
-    }
-    
-    /**
      * Función solicitar proyecto residencial
      * 
-     * @param  nombre Nombre del proyecto
-     * @param  year Año de solicitud del proyecto
-     * @param  month Mes de solicitud del proyecto
-     * @param  day Día de solicitud del proyecto
-     * @param  direccion Dirección de la obra
-     * @param  supTerreno Superficie del terreno en m2
-     * @param  supEdificio Superficie del edificio en m2
-     * @param  noPlantas Número de plantas del edificio
-     * @param  noHabitaciones Número de habitaciones
-     * @param  noBanos Número de baños
-     * @param  esComunitario Finalidad comunitaria del proyecto: "true" o "false"
+     * @param nombre Nombre del proyecto
+     * @param year Año de solicitud del proyecto
+     * @param month Mes de solicitud del proyecto
+     * @param day Día de solicitud del proyecto
+     * @param direccion Dirección de la obra
+     * @param supTerreno Superficie del terreno en m2
+     * @param supEdificio Superficie del edificio en m2
+     * @param noPlantas Número de plantas del edificio
+     * @param noHabitaciones Número de habitaciones
+     * @param noBanos Número de baños
+     * @param esComunitario Finalidad comunitaria del proyecto: "true" o "false"
      */
-    public void solicitarProyectoResidencial(String nombre, int year, int month,
-                        int day, String direccion, int supTerreno, int supEdificio,
-                        int noPlantas, int noHabitaciones, int noBanos,
-                        boolean esComunitario)
+    public void solicitarProyectoResidencial(String nombre,
+                                             int year,
+                                             int month,
+                                             int day,
+                                             String direccion,
+                                             int supTerreno,
+                                             int supEdificio,
+                                             int noPlantas,
+                                             int noHabitaciones,
+                                             int noBanos,
+                                             boolean esComunitario)
     {
         if(getActivo() == true){
             Residencial residencial = new Residencial(nombre, year, month, day,
@@ -75,23 +72,30 @@ public class Cliente extends Persona
     /**
      * Función solicitar proyecto no residencial
      * 
-     * @param  nombre Nombre del proyecto
-     * @param  year Año de solicitud del proyecto
-     * @param  month Mes de solicitud del proyecto
-     * @param  day Día de solicitud del proyecto
-     * @param  direccion Dirección de la edificación
-     * @param  supTerreno Superficie del terreno en m2
-     * @param  supEdificio Superficie de la edificación en m2
-     * @param  finalidad Finalidad de la edificación
-     * @param  esComunitario Finalidad comunitaria del proyecto: "true" o "false"
+     * @param nombre Nombre del proyecto
+     * @param year Año de solicitud del proyecto
+     * @param month Mes de solicitud del proyecto
+     * @param day Día de solicitud del proyecto
+     * @param direccion Dirección de la edificación
+     * @param supTerreno Superficie del terreno en m2
+     * @param supEdificio Superficie de la edificación en m2
+     * @param finalidad Finalidad de la edificación
+     * @param esComunitario Finalidad comunitaria del proyecto: "true" o "false"
      */
-    public void solicitarProyectoNoResidencial(String nombre, int year, int month,
-                    int day, String direccion, int supTerreno, int supEdificio,
-                    String finalidad, boolean esComunitario)
+    public void solicitarProyectoNoResidencial(String nombre,
+                                               int year,
+                                               int month,
+                                               int day,
+                                               String direccion,
+                                               int supTerreno,
+                                               int supEdificio,
+                                               String finalidad,
+                                               boolean esComunitario)
     {
         if(getActivo() == true){
             NoResidencial noResidencial = new NoResidencial(nombre, year, month,
-               day, direccion, supTerreno, supEdificio, finalidad, esComunitario);
+                day, direccion, supTerreno, supEdificio, finalidad, esComunitario);
+            noResidencial.setCliente(this);
             proyectos.add(noResidencial);
             printConfiracionSolicitudProyecto(noResidencial);
         } else {
@@ -102,21 +106,26 @@ public class Cliente extends Persona
     /**
      * Función solicitar proyecto de rehabilitación
      * 
-     * @param  nombre Nombre del proyecto
-     * @param  year Año de solicitud del proyecto
-     * @param  month Mes de solicitud del proyecto
-     * @param  day Día de solicitud del proyecto
-     * @param  direccion Direccion de realización del proyecto
-     * @param  supReformar Superficie a reformar en m2
-     * @param  esComunitario Finalidad comunitaria del proyecto: "true" o "false"
+     * @param nombre Nombre del proyecto
+     * @param year Año de solicitud del proyecto
+     * @param month Mes de solicitud del proyecto
+     * @param day Día de solicitud del proyecto
+     * @param direccion Direccion de realización del proyecto
+     * @param supReformar Superficie a reformar en m2
+     * @param esComunitario Finalidad comunitaria del proyecto: "true" o "false"
      */
-    public void solicitarProyectoRehabilitacion(String nombre, int year, int month,
-                    int day, String direccion, int supReformar,
-                    boolean esComunitario)
+    public void solicitarProyectoRehabilitacion(String nombre,
+                                                int year,
+                                                int month,
+                                                int day,
+                                                String direccion,
+                                                int supReformar,
+                                                boolean esComunitario)
     {
         if(getActivo() == true){
             Rehabilitacion rehabilitacion = new Rehabilitacion(nombre, year,
                 month, day, direccion, supReformar, esComunitario);
+            rehabilitacion.setCliente(this);
             proyectos.add(rehabilitacion);
             printConfiracionSolicitudProyecto(rehabilitacion);
         } else {
@@ -127,13 +136,15 @@ public class Cliente extends Persona
     /**
      * Función solicitar certificado de habitabilidad
      * 
-     * @param  year Año de solicitud del certificado
-     * @param  month Mes de solicitud del certificado
-     * @param  day Día de solicitud del certificado
-     * @param  residencial Proyecto residencial asociado al certificado
+     * @param year Año de solicitud del certificado
+     * @param month Mes de solicitud del certificado
+     * @param day Día de solicitud del certificado
+     * @param residencial Proyecto residencial asociado al certificado
      */
-    public void solicitarCertificadoHabitabilidad(int year, int month,
-                        int day, Residencial residencial)
+    public void solicitarCertificadoHabitabilidad(int year,
+                                                  int month,
+                                                  int day,
+                                                  Residencial residencial)
     {
         if(getActivo() == true){
             Habitabilidad habitabilidad = new Habitabilidad(year, month, day,
@@ -150,13 +161,15 @@ public class Cliente extends Persona
     /**
      * Función solicitar certificado de inspección técnica
      * 
-     * @param  year Año de solicitud del certificado
-     * @param  month Mes de solicitud del certificado
-     * @param  day Día de solicitud del certificado
-     * @param  proyecto Proyecto comunitario asociado al certificado
+     * @param year Año de solicitud del certificado
+     * @param month Mes de solicitud del certificado
+     * @param day Día de solicitud del certificado
+     * @param proyecto Proyecto comunitario asociado al certificado
      */
-    public void solicitarCertificadoInspeccionTecnica(int year, int month,
-                        int day, Proyecto proyecto)
+    public void solicitarCertificadoInspeccionTecnica(int year,
+                                                      int month,
+                                                      int day,
+                                                      Proyecto proyecto)
     {
         if(getActivo() == true){
             if(proyecto.getComunitario() == true){
@@ -176,13 +189,15 @@ public class Cliente extends Persona
     /**
      * Función solicitar certificado de eficiencia energética
      * 
-     * @param  year Año de solicitud del certificado
-     * @param  month Mes de solicitud del certificado
-     * @param  day Día de solicitud del certificado
-     * @param  proyecto Proyecto arquitectónico asociado al certificado
+     * @param year Año de solicitud del certificado
+     * @param month Mes de solicitud del certificado
+     * @param day Día de solicitud del certificado
+     * @param proyecto Proyecto arquitectónico asociado al certificado
      */
-    public void solicitarCertificadoEficiencia(int year, int month,
-                        int day, Proyecto proyecto)
+    public void solicitarCertificadoEficiencia(int year,
+                                               int month,
+                                               int day,
+                                               Proyecto proyecto)
     {
         if(getActivo() == true){
             Eficiencia eficiencia = new Eficiencia(year,
@@ -198,17 +213,19 @@ public class Cliente extends Persona
     /**
      * Función solicitar informe pericial
      * 
-     * @param  year Año de solicitud del certificado
-     * @param  month Mes de solicitud del certificado
-     * @param  day Día de solicitud del certificado
-     * @param  proyecto Proyecto arquitectónico asociado al informe pericial
+     * @param year Año de solicitud del certificado
+     * @param month Mes de solicitud del certificado
+     * @param day Día de solicitud del certificado
+     * @param proyecto Proyecto arquitectónico asociado al informe pericial
      */
-    public void solicitarInformePericial(int year, int month,
-                        int day, Proyecto proyecto)
+    public void solicitarInformePericial(int year,
+                                         int month,
+                                         int day,
+                                         Proyecto proyecto)
     {
         if(getActivo() == true){
             InformePericial informePericial = new InformePericial(year,
-                    month, day, proyecto);
+                month, day, proyecto);
             informePericial.setCliente(this);
             certificados.add(informePericial);
             printConfiracionSolicitudCertificado(informePericial);
@@ -218,7 +235,19 @@ public class Cliente extends Persona
     }
     
     /**
+     * Getter de número de cliente
+     * 
+     * @return Número de cliente
+     */
+    public String getNumeroCliente()
+    {
+        return NUMERO_CLIENTE;
+    }
+    
+    /**
      * Getter del ArrayList de proyectos
+     * 
+     * @return Arraylist de proyectos solicitados por el cliente
      */
     public ArrayList<Proyecto> getProyectos()
     {
@@ -227,6 +256,8 @@ public class Cliente extends Persona
     
     /**
      * Getter del ArrayList de certificados
+     * 
+     * @return ArrayList de certificados solicitados por el cliente
      */
     public ArrayList<Certificado> getCertificados()
     {

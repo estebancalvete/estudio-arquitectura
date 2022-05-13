@@ -133,8 +133,12 @@ public class Administrador extends Empleado
      */
     public void modificaNombre(Persona persona, String name)
     {
-        persona.setNombre(name);
-        printConfirmacionModificacion();
+        if(getEstudio() != null){
+            persona.setName(name);
+            printConfirmacionModificacion();
+        } else {
+            printAdminNoSistema();
+        }
     }
     
     /**
@@ -145,32 +149,34 @@ public class Administrador extends Empleado
      */
     public void modificaTelefono(Persona persona, int telefono)
     {
-        persona.setTelefono(telefono);
-        printConfirmacionModificacion();
+        if(getEstudio() != null){
+            persona.setTelefono(telefono);
+            printConfirmacionModificacion();
+        } else {
+            printAdminNoSistema();
+        }
     }
     
     /**
-     * Asignación de empleados a un proyecto. Se añadirá también la fecha estimada
-     * de entrega del proyecto y el proyecto se considerará contratado
+     * Asignación de empleados a un proyecto
+     * El proyecto se considerará contratado
      * 
      * @param  proyecto Proyecto al que se asignan los empleados
      * @param  arquitecto Arquitecto a añadir al proyecto
      * @param  aparejador Aparejador a añadir al proyecto
      * @param  contable Contable a añadir al proyecto
-     * @param  year Año de entrega estimada del proyecto
-     * @param  month Mes de entrega estimada del proyecto
-     * @param  day Día de entrega estimada del proyecto
      */
     public void asignarEmpleadosProyecto(Proyecto proyecto,
                                          Arquitecto arquitecto,
                                          Aparejador aparejador,
-                                         Contable contable,
-                                         int year,
-                                         int month,
-                                         int day)
+                                         Contable contable)
     {
-        proyecto.setEmpleadosProyecto(arquitecto, aparejador, contable,
-                                      year, month, day);
+        if(getEstudio() != null){
+            proyecto.setEmpleadosProyecto(arquitecto, aparejador, contable);
+            printConfirmacionEmpleados();
+        } else {
+            printAdminNoSistema();
+        }
     }
     
     /**
@@ -193,8 +199,13 @@ public class Administrador extends Empleado
                                             int month,
                                             int day)
     {
-        certificado.setEmpleadosCertificado(arquitecto, aparejador, contable,
-                                            year, month, day);
+        if(getEstudio() != null){
+            certificado.setEmpleadosCertificado(arquitecto, aparejador, contable,
+                                                year, month, day);
+            printConfirmacionEmpleados();
+        } else {
+            printAdminNoSistema();
+        }
     }
     
     /**
@@ -202,15 +213,19 @@ public class Administrador extends Empleado
      */
     public void VisualizarPersonasRegistradas()
     {
-        System.out.println("Empleados:");
-        System.out.println("---------------------------------------------------");
-        for(int i=0; i<getEstudio().getEmpleados().size(); i++){
-            printInfoEmpleado(getEstudio().getEmpleados().get(i));
-        }
-        System.out.println("Clientes:");
-        System.out.println("---------------------------------------------------");
-        for(int i=0; i<getEstudio().getClientes().size(); i++){
-            printInfoCliente(getEstudio().getClientes().get(i));
+        if(getEstudio() != null){
+            System.out.println("Empleados:");
+            System.out.println("-----------------------------------------------");
+            for(int i=0; i<getEstudio().getEmpleados().size(); i++){
+                printInfoEmpleado(getEstudio().getEmpleados().get(i));
+            }
+            System.out.println("Clientes:");
+            System.out.println("-----------------------------------------------");
+            for(int i=0; i<getEstudio().getClientes().size(); i++){
+                printInfoCliente(getEstudio().getClientes().get(i));
+            }
+        } else {
+            printAdminNoSistema();
         }
     }
     
@@ -222,24 +237,29 @@ public class Administrador extends Empleado
      */
     public void VisualizarClientesPorAqruitecto(Arquitecto arquitecto)
     {
-        System.out.println("Clientes asociados al arquitecto:");
-        System.out.println(arquitecto.getNumeroEmpleado() + ", "
-                           + arquitecto.getName());
-        System.out.println("---------------------------------------------------");
-        ArrayList<Cliente> clientes = getEstudio().getClientes();
-        for(int i=0; i<clientes.size(); i++){
-            ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
-            for(int j=0; j<proyectos.size(); j++){
-                if(proyectos.get(j).getArquitecto() == arquitecto){
-                    printInfoCliente(clientes.get(i));
+        if(getEstudio() != null){
+            System.out.println("Clientes asociados al arquitecto:");
+            System.out.println(arquitecto.getNumeroEmpleado() + ", "
+                               + arquitecto.getName());
+            System.out.println("-----------------------------------------------");
+            ArrayList<Cliente> clientes = getEstudio().getClientes();
+            for(int i=0; i<clientes.size(); i++){
+                ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
+                for(int j=0; j<proyectos.size(); j++){
+                    if(proyectos.get(j).getArquitecto() == arquitecto){
+                        printInfoCliente(clientes.get(i));
+                    }
+                }
+                ArrayList<Certificado> certificados = clientes.get(i)
+                                                          .getCertificados();
+                for(int j=0; j<certificados.size(); j++){
+                    if(certificados.get(j).getArquitecto() == arquitecto){
+                        printInfoCliente(clientes.get(i));
+                    }
                 }
             }
-            ArrayList<Certificado> certificados = clientes.get(i).getCertificados();
-            for(int j=0; j<certificados.size(); j++){
-                if(certificados.get(j).getArquitecto() == arquitecto){
-                    printInfoCliente(clientes.get(i));
-                }
-            }
+        } else {
+            printAdminNoSistema();
         }
     }
     
@@ -251,40 +271,49 @@ public class Administrador extends Empleado
      */
     public void VisualizarClientesPorAparejador(Aparejador aparejador)
     {
-        System.out.println("Clientes asociados al aparejador:");
-        System.out.println(aparejador.getNumeroEmpleado() + ", "
-                           + aparejador.getName());
-        System.out.println("---------------------------------------------------");
-        ArrayList<Cliente> clientes = getEstudio().getClientes();
-        for(int i=0; i<clientes.size(); i++){
-            ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
-            for(int j=0; j<proyectos.size(); j++){
-                if(proyectos.get(j).getAparejador() == aparejador){
-                    printInfoCliente(clientes.get(i));
+        if(getEstudio() != null){
+            System.out.println("Clientes asociados al aparejador:");
+            System.out.println(aparejador.getNumeroEmpleado() + ", "
+                               + aparejador.getName());
+            System.out.println("-----------------------------------------------");
+            ArrayList<Cliente> clientes = getEstudio().getClientes();
+            for(int i=0; i<clientes.size(); i++){
+                ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
+                for(int j=0; j<proyectos.size(); j++){
+                    if(proyectos.get(j).getAparejador() == aparejador){
+                        printInfoCliente(clientes.get(i));
+                    }
+                }
+                ArrayList<Certificado> certificados = clientes.get(i)
+                                                          .getCertificados();
+                for(int j=0; j<certificados.size(); j++){
+                    if(certificados.get(j).getAparejador() == aparejador){
+                        printInfoCliente(clientes.get(i));
+                    }
                 }
             }
-            ArrayList<Certificado> certificados = clientes.get(i).getCertificados();
-            for(int j=0; j<certificados.size(); j++){
-                if(certificados.get(j).getAparejador() == aparejador){
-                    printInfoCliente(clientes.get(i));
-                }
-            }
+        } else {
+            printAdminNoSistema();
         }
     }
     
     /**
      * Visualización de viviendas/edificios y las fechas de fin de obra
      */
-    public void VisualizarProyectosFechaFinObra()
+    public void visualizarProyectosFechaFinObra()
     {
-        ArrayList<Cliente> clientes = getEstudio().getClientes();
-        System.out.println("Proyectos del estudio y su fecha de fin de obra:");
-        System.out.println("---------------------------------------------------");
-        for(int i=0; i<clientes.size(); i++){
-            ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
-            for(int j=0; j<proyectos.size(); j++){
-                printProyectoFechaFinObra(proyectos.get(j));
+        if(getEstudio() != null){
+            System.out.println("Proyectos del estudio y su fecha de fin de obra:");
+            System.out.println("------------------------------------------------");
+            ArrayList<Cliente> clientes = getEstudio().getClientes();
+            for(int i=0; i<clientes.size(); i++){
+                ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
+                for(int j=0; j<proyectos.size(); j++){
+                    printProyectoFechaFinObra(proyectos.get(j));
+                }
             }
+        } else {
+            printAdminNoSistema();
         }
     }
     
@@ -292,9 +321,30 @@ public class Administrador extends Empleado
      * Visualización de viviendas/edificios y las fechas del último certificado
      * de habitabilidad emitido.
      */
-    public void printViviendaFUC()
+    public void visualizarProyectosFechaUltimoCertificadoHabitabilidad()
     {
-        //
+        if(getEstudio() != null){
+            System.out.println("Proyectos residenciales del estudio y fecha de");
+            System.out.println("su último certificado de habitabilidad:");
+            System.out.println("----------------------------------------------");
+            ArrayList<Cliente> clientes = getEstudio().getClientes();
+            for(int i=0; i<clientes.size(); i++){
+                ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
+                ArrayList<Proyecto> proyectosResidenciales = filterResidenciales(
+                                                                 proyectos);
+                for(int j=0; j<proyectosResidenciales.size(); j++){
+                    Proyecto proyecto = proyectosResidenciales.get(j);
+                    Certificado ultimoHabita = getUltimoHabitabilidad(proyecto);
+                    if(ultimoHabita != null){
+                        printProyectoFechaCertificado(ultimoHabita);
+                    } else {
+                        printProyectoNoTieneCertificado(proyecto);
+                    }
+                }
+            }
+        } else {
+            printAdminNoSistema();
+        }
     }
     
     /**
@@ -315,6 +365,57 @@ public class Administrador extends Empleado
     }
     
     // MARK - Métodos privados
+    /**
+     * Función auxiliar para el filtrado de proyectos residenciales a partir de
+     * un ArrayList de proyectos
+     * 
+     * @param proyectos ArrayList de proyectos
+     * 
+     * @return ArrayList de proyectos residenciales
+     */
+    private ArrayList<Proyecto> filterResidenciales(ArrayList<Proyecto> proyectos)
+    {
+        ArrayList<Proyecto> residenciales = new ArrayList<Proyecto>();
+        for(int i=0; i<proyectos.size(); i++){
+            if(proyectos.get(i).getEsResidencial()){
+                residenciales.add(proyectos.get(i));
+            }
+        }
+        return residenciales;
+    }
+    
+    /**
+     * Función auxiliar obtiene el último certificado de habitabilidad a partir de
+     * un proyecto residencial dado. Si el proyecto no tiene aún certificado
+     * devuelve null.
+     * 
+     * @param proyecto Proyecto del que se obtienen certificados de habitabilidad
+     * 
+     * @return ArrayList de certificaods de habitabilidad
+     */
+    private Certificado getUltimoHabitabilidad(Proyecto proyecto)
+    {
+        ArrayList<Certificado> certificados = proyecto.getCertificados();
+        ArrayList<Certificado> certs = new ArrayList<Certificado>();
+        for(int i=0; i<certificados.size(); i++){
+            if(certificados.get(i).getTipo() == "Habitabilidad"){
+                certs.add(certificados.get(i));
+            }
+        }
+        ArrayList<Certificado> expedidos = new ArrayList<Certificado>();
+        for(int i=0; i<certs.size(); i++){
+            if(certs.get(i).getEntregado()){
+                expedidos.add(certs.get(i));
+            }
+        }
+        if(certs.size() > 0){
+            int lastIndex = certs.size() - 1;
+            return certs.get(lastIndex);
+        } else {
+            return null;
+        }
+    }
+    
     /**
      * Método privado de impresión de mensaje de error "Administrador no dado de
      * alta en el sistema"
@@ -413,5 +514,53 @@ public class Administrador extends Empleado
             System.out.println("Fecha de entrega de obra aún no asignada");
         }
         System.out.println("---------------------------------------------------");
+    }
+    
+    /**
+     * Método privado de impresión de información de proyecto residencial con la
+     * fecha de su último certificado de habitabilidad.
+     * 
+     * @param  certificado Último certificado de habitabilidad de un proyecto dado
+     */
+    private void printProyectoFechaCertificado(Certificado certificado){
+        Cliente cliente = certificado.getCliente();
+        Proyecto proyecto = certificado.getProyecto();
+        Date fechaEmision = certificado.getFechaEmision();
+        System.out.println("Número de cliente: " + cliente.getNumeroCliente());
+        System.out.println("Nombre de cliente: " + cliente.getName());
+        System.out.println("Teléfono de cliente: " + cliente.getTelefono());
+        System.out.println("Número de proyecto: " + proyecto.getId());
+        System.out.println("Nombre de proyecto: " + cliente.getName());
+        System.out.println("Número de certificao: " + certificado.getId());
+        System.out.println("Fecha de último certificado de habitabilidad:");
+        System.out.println(fechaEmision.getDay() + "/" + fechaEmision.getMonth()
+                           + "/" + fechaEmision.getYear());
+        System.out.println("---------------------------------------------------");
+    }
+    
+    /**
+     * Método privado de impresión de información de proyecto residencial con la
+     * fecha de su último certificado de habitabilidad.
+     * 
+     * @param  certificado Último certificado de habitabilidad de un proyecto dado
+     */
+    private void printProyectoNoTieneCertificado(Proyecto proyecto){
+        Cliente cliente = proyecto.getCliente();
+        System.out.println("Número de cliente: " + cliente.getNumeroCliente());
+        System.out.println("Nombre de cliente: " + cliente.getName());
+        System.out.println("Teléfono de cliente: " + cliente.getTelefono());
+        System.out.println("Número de proyecto: " + proyecto.getId());
+        System.out.println("Nombre de proyecto: " + cliente.getName());
+        System.out.println("ESTE PROYECTO RESIDENCIAL AÚN NO TIENE NINGÚN");
+        System.out.println("CERTIFICADO DE HABITABILIDAD EXPEDIDO.");
+        System.out.println("---------------------------------------------------");
+    }
+    
+    /**
+     * Printer de confirmación de empleados asignados con éxito
+     */
+    private void printConfirmacionEmpleados()
+    {
+        System.out.println("Los empleados se han asignado con éxito");
     }
 }
