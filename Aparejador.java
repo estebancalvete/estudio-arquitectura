@@ -26,30 +26,35 @@ public class Aparejador extends Empleado
     /**
      * Método de inicición de obra
      * 
-     * @param proyecto Proyecto asociado al inicio de obra
+     * @param numProyecto Número del proyecto asociado al inicio de obra
      * @param year Año de inicio de obra
      * @param month Mes de inicio de obra
      * @param day Día de inicio de obra
      * @param duracion Duración prevista de obra
      */
-    public void iniciarObra(Proyecto proyecto, int year, int month, int day,
+    public void iniciarObra(String numProyecto, int year, int month, int day,
                             int duracion)
     {
         if(getEstudio() != null) {
-            if(proyecto.getAparejador() != this){
-                printErrorAparejadorAsignado();
-            } else {
-                if(proyecto.getFechaEntregaProyecto() != null){
-                    if(duracion > 0){
-                        proyecto.setFechaInicioObra(year, month, day);
-                        proyecto.setDuracionPrevista(duracion);
-                        printConfirmacion();
-                    } else {
-                        printErrorDuracion();
-                    }
+            Proyecto proyecto = getProyecto(numProyecto);
+            if(proyecto != null){
+                if(proyecto.getAparejador() != this){
+                    printErrorAparejadorAsignado();
                 } else {
-                    printErrorProyectoNoEntregado();
+                    if(proyecto.getFechaEntregaProyecto() != null){
+                        if(duracion > 0){
+                            proyecto.setFechaInicioObra(year, month, day);
+                            proyecto.setDuracionPrevista(duracion);
+                            printConfirmacion();
+                        } else {
+                            printErrorDuracion();
+                        }
+                    } else {
+                        printErrorProyectoNoEntregado();
+                    }
                 }
+            } else {
+                printErrorProyecto();
             }
         } else {
             printAparejadorNoSistema();
@@ -59,24 +64,57 @@ public class Aparejador extends Empleado
     /**
      * Método de entrega de obra
      * 
-     * @param proyecto Proyecto asociado a la obra
+     * @param numProyecto Número del proyecto asociado a la obra
      * @param year Año de entrega de obra
      * @param month Mes de entrega de obra
      * @param day Día de entrega de obra
      */
-    public void entregarObra(Proyecto proyecto, int year, int month, int day)
+    public void entregarObra(String numProyecto, int year, int month, int day)
     {
         if(getEstudio() != null) {
-            if(proyecto.getAparejador() == this){
-                if(proyecto.getFechaInicioObra() != null){
-                    proyecto.setFechaEntregaObra(year, month, day);
-                    proyecto.setEstaFinalizado();
-                    printConfirmacion();
+            Proyecto proyecto = getProyecto(numProyecto);
+            if(proyecto != null){
+                if(proyecto.getAparejador() == this){
+                    if(proyecto.getFechaInicioObra() != null){
+                        proyecto.setFechaEntregaObra(year, month, day);
+                        proyecto.setEstaFinalizado();
+                        printConfirmacion();
+                    } else {
+                        printErrorNoIniciado();
+                    }
                 } else {
-                    printErrorNoIniciado();
+                    printErrorAparejadorAsignado();
                 }
             } else {
-                printErrorAparejadorAsignado();
+                printErrorProyecto();
+            }
+        } else {
+            printAparejadorNoSistema();
+        }
+    }
+    
+    /**
+     * Método de registro de visita para futura expedición de certificado
+     * 
+     * @param numCertificado Número del certificado al que se refiere la visita
+     * @param year Año de visita
+     * @param month Mes de visita
+     * @param day Día de visita
+     */
+    public void registrarVisitaParaCertificado(String numCertificado, int year,
+                                               int month, int day)
+    {
+        if(getEstudio() != null) {
+            Certificado certificado = getCertificado(numCertificado);
+            if(certificado != null){
+                if(certificado.getAparejador() == this){
+                    certificado.setFechaVisitaAparejador(year, month, day);
+                    printConfirmacion();
+                } else {
+                    printErrorAparejadorAsignado();
+                }
+            } else {
+                printErrorCertificado();
             }
         } else {
             printAparejadorNoSistema();
@@ -84,6 +122,51 @@ public class Aparejador extends Empleado
     }
     
     // MARK - Métodos privados
+    /**
+     * Función auxiliar de obtención de proyecto a partir del número de proyecto
+     * 
+     * @param numero String de número de proyecto, por ejemplo "PRO-16"
+     * 
+     * @return Proyecto correspondiente al número introducido
+     */
+    private Proyecto getProyecto(String numero)
+    {
+        Proyecto proyecto = null;
+        for(int i=0; i<getEstudio().getClientes().size(); i++){
+            Cliente cliente = getEstudio().getClientes().get(i);
+            for(int j=0; j<cliente.getProyectos().size(); j++){
+                Proyecto proyectoAComparar = cliente.getProyectos().get(j);
+                if(proyectoAComparar.getId() == numero){
+                    proyecto = proyectoAComparar;
+                }
+            }
+        }
+        return proyecto;
+    }
+    
+    /**
+     * Función auxiliar de obtención de certificado a partir del número de
+     * certificado
+     * 
+     * @param numero String de número de certificado, por ejemplo "CER-27"
+     * 
+     * @return Certificado correspondiente al número introducido
+     */
+    private Certificado getCertificado(String numero)
+    {
+        Certificado certificado = null;
+        for(int i=0; i<getEstudio().getClientes().size(); i++){
+            Cliente cliente = getEstudio().getClientes().get(i);
+            for(int j=0; j<cliente.getCertificados().size(); j++){
+                Certificado certificadoAComparar = cliente.getCertificados().get(j);
+                if(certificadoAComparar.getId() == numero){
+                    certificado = certificadoAComparar;
+                }
+            }
+        }
+        return certificado;
+    }
+    
     /**
      * Printer de mensaje de error "Aparejador no dado de alta en el sistema"
      */
@@ -135,5 +218,21 @@ public class Aparejador extends Empleado
     {
         System.out.println("La obra no se puede entregar porque");
         System.out.println("aún no ha sido iniciada.");
+    }
+    
+    /**
+     * Printer de error de proyecto no encontrado
+     */
+    private void printErrorProyecto()
+    {
+        System.out.println("No se ha encontrado proyecto con el número indicado");
+    }
+    
+    /**
+     * Printer de error de certificado no encontrado
+     */
+    private void printErrorCertificado()
+    {
+        System.out.println("No se ha encontrado certificado con el num. indicado");
     }
 }

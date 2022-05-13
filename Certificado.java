@@ -11,8 +11,8 @@ public class Certificado
     // MARK - Campos
     private final String NUMERO_CERTIFICADO;
     private Date fechaSolicitud;
-    private Date fechaEstimadaEntrega;
     private Date fechaEmision;
+    private Date fechaVisitaAparejador;
     private boolean entregado;
     private double coste;
     private Cliente cliente;
@@ -21,6 +21,7 @@ public class Certificado
     private Contable contable;
     private Proyecto proyecto;
     private String tipo;
+    private Character categoria;
     
     // MARK - Constructores
     /**
@@ -84,6 +85,26 @@ public class Certificado
     }
     
     /**
+     * Getter de fecha de visita de aparejador
+     * 
+     * @return Objeto Date representativo de la fecha de visita del aparejador
+     */
+    public Date getFechaVisitaAparejador()
+    {
+        return fechaVisitaAparejador;
+    }
+    
+    /**
+     * Getter de categoría del certificado
+     * 
+     * @return Character representativo de la categoria del certificado
+     */
+    public Character getCategoria()
+    {
+        return categoria;
+    }
+    
+    /**
      * Getter de entregado. Indica si el certificado está expedido o aún está en
      * proceso de expedición
      * 
@@ -141,22 +162,27 @@ public class Certificado
      * @param arquitecto Arquitecto que firmará el certificado
      * @param aparejador Aparejador que visitará el proyecto
      * @param contable Contable que gestionará las finanzas
-     * @param year Año de entrega estimada del certificado
-     * @param month Mes de entrega estimada del certificado
-     * @param day Dia de entrega estimada del certificado
      */
     public void setEmpleadosCertificado(Arquitecto arquitecto,
                                         Aparejador aparejador,
-                                        Contable contable,
-                                        int year,
-                                        int month,
-                                        int day)
+                                        Contable contable)
     {
         this.arquitecto = arquitecto;
         this.aparejador = aparejador;
         this.contable = contable;
-        fechaEstimadaEntrega = new Date(year, month, day);
         printConfirmacionEmpleados();
+    }
+    
+    /**
+     * Setter de fecha de visita del apaerejador
+     * 
+     * @param  year Año de visita del aparejador
+     * @param  month Mes de visita del aparejador
+     * @param  day Dia de visita del aparejador
+     */
+    public void setFechaVisitaAparejador(int year, int month, int day)
+    {
+        fechaVisitaAparejador = new Date(year, month, day);
     }
     
     /**
@@ -170,6 +196,16 @@ public class Certificado
     {
         fechaEmision = new Date(year, month, day);
         entregado = true;
+    }
+    
+    /**
+     * Setter de categoría del certificado
+     * 
+     * @param categoria Categoría del certificado: ('A','B','C','D','E','F' o 'G')
+     */
+    public void setCategoria(Character categoria)
+    {
+        this.categoria = categoria;
     }
     
     /**
@@ -195,7 +231,7 @@ public class Certificado
     // MARK - Métodos privados
     /**
      * Método privado de impresión de mensaje de confirmación de adición de
-     * empleados al proyecto y su fecha prevista de entrega
+     * empleados al proyecto
      */
     private void printConfirmacionEmpleados()
     {
@@ -204,9 +240,5 @@ public class Certificado
         System.out.println("Arquitecto: " + arquitecto.getName());
         System.out.println("Aparejador: " + aparejador.getName());
         System.out.println("Contable: " + contable.getName());
-        System.out.println("Fecha estimada de entrega:");
-        System.out.println(fechaEstimadaEntrega.getDay() + "/" +
-                           fechaEstimadaEntrega.getMonth() + "/" +
-                           fechaEstimadaEntrega.getYear());
     }
 }

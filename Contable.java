@@ -26,21 +26,26 @@ public class Contable extends Empleado
     /**
      * Función de asignación de presupuesto a un proyecto
      * 
-     * @param proyecto Proyecto a asignar el presupuesto
+     * @param numProyecto Número del proyecto a asignar el presupuesto
      * @param presupuesto Presupuesto del proyecto
      */
-    public void asignarPresupuestoProyecto(Proyecto proyecto, double presupuesto)
+    public void asignarPresupuestoProyecto(String numProyecto, double presupuesto)
     {
         if(getEstudio() != null) {
-            if(proyecto.getContable() != this){
-                printErrorContableAsignado();
-            } else {
-                if(presupuesto > 0){
-                    proyecto.setPresupuesto(presupuesto);
-                    printConfirmacion();
+            Proyecto proyecto = getProyecto(numProyecto);
+            if(proyecto != null){
+                if(proyecto.getContable() != this){
+                    printErrorContableAsignado();
                 } else {
-                    printErrorCantidad();
+                    if(presupuesto > 0){
+                        proyecto.setPresupuesto(presupuesto);
+                        printConfirmacion();
+                    } else {
+                        printErrorCantidad();
+                    }
                 }
+            } else {
+                printErrorProyecto();
             }
         } else {
             printContableNoSistema();
@@ -51,21 +56,26 @@ public class Contable extends Empleado
     /**
      * Función de asignación de coste a un proyecto
      * 
-     * @param proyecto Proyecto a asignar el coste
+     * @param numProyecto Número del proyecto a asignar el coste
      * @param coste Coste del proyecto
      */
-    public void asignarCosteProyecto(Proyecto proyecto, double coste)
+    public void asignarCosteProyecto(String numProyecto, double coste)
     {
         if(getEstudio() != null) {
-            if(proyecto.getContable() != this){
-                printErrorContableAsignado();
-            } else {
-                if(coste > 0){
-                    proyecto.setCoste(coste);
-                    printConfirmacion();
+            Proyecto proyecto = getProyecto(numProyecto);
+            if(proyecto != null){
+                if(proyecto.getContable() != this){
+                    printErrorContableAsignado();
                 } else {
-                    printErrorCantidad();
+                    if(coste > 0){
+                        proyecto.setCoste(coste);
+                        printConfirmacion();
+                    } else {
+                        printErrorCantidad();
+                    }
                 }
+            } else {
+                printErrorProyecto();
             }
         } else {
             printContableNoSistema();
@@ -75,21 +85,26 @@ public class Contable extends Empleado
     /**
      * Función de asignación de coste a un certificado
      * 
-     * @param certificado Certificado a asignar el coste
+     * @param numCertificado Número del certificado a asignar el coste
      * @param coste Coste del certificado
      */
-    public void asignarCosteCertificado(Certificado certificado, double coste)
+    public void asignarCosteCertificado(String numCertificado, double coste)
     {
         if(getEstudio() != null) {
-            if(certificado.getContable() != this){
-                printErrorContableAsignado();
-            } else {
-                if(coste > 0){
-                    certificado.setCoste(coste);
-                    printConfirmacion();
+            Certificado certificado = getCertificado(numCertificado);
+            if(certificado != null){
+                if(certificado.getContable() != this){
+                    printErrorContableAsignado();
                 } else {
-                    printErrorCantidad();
+                    if(coste > 0){
+                        certificado.setCoste(coste);
+                        printConfirmacion();
+                    } else {
+                        printErrorCantidad();
+                    }
                 }
+            } else {
+                printErrorCertificado();
             }
         } else {
             printContableNoSistema();
@@ -126,6 +141,51 @@ public class Contable extends Empleado
     }
     
     // MARK - Métodos privados
+    /**
+     * Función auxiliar de obtención de proyecto a partir del número de proyecto
+     * 
+     * @param numero String de número de proyecto, por ejemplo "PRO-16"
+     * 
+     * @return Proyecto correspondiente al número introducido
+     */
+    private Proyecto getProyecto(String numero)
+    {
+        Proyecto proyecto = null;
+        for(int i=0; i<getEstudio().getClientes().size(); i++){
+            Cliente cliente = getEstudio().getClientes().get(i);
+            for(int j=0; j<cliente.getProyectos().size(); j++){
+                Proyecto proyectoAComparar = cliente.getProyectos().get(j);
+                if(proyectoAComparar.getId() == numero){
+                    proyecto = proyectoAComparar;
+                }
+            }
+        }
+        return proyecto;
+    }
+    
+    /**
+     * Función auxiliar de obtención de certificado a partir del número de
+     * certificado
+     * 
+     * @param numero String de número de certificado, por ejemplo "CER-27"
+     * 
+     * @return Certificado correspondiente al número introducido
+     */
+    private Certificado getCertificado(String numero)
+    {
+        Certificado certificado = null;
+        for(int i=0; i<getEstudio().getClientes().size(); i++){
+            Cliente cliente = getEstudio().getClientes().get(i);
+            for(int j=0; j<cliente.getCertificados().size(); j++){
+                Certificado certificadoAComparar = cliente.getCertificados().get(j);
+                if(certificadoAComparar.getId() == numero){
+                    certificado = certificadoAComparar;
+                }
+            }
+        }
+        return certificado;
+    }
+    
     /**
      * Función auxiliar de retorno de ArrayList de proyectos asignados a partir
      * de un ArrayList de proyectos
@@ -245,5 +305,21 @@ public class Contable extends Empleado
     private void printConfirmacion()
     {
         System.out.println("La gestión solicitada se ha realizado con éxito");
+    }
+    
+    /**
+     * Printer de error de proyecto no encontrado
+     */
+    private void printErrorProyecto()
+    {
+        System.out.println("No se ha encontrado proyecto con el número indicado");
+    }
+    
+    /**
+     * Printer de error de certificado no encontrado
+     */
+    private void printErrorCertificado()
+    {
+        System.out.println("No se ha encontrado certificado con el num. indicado");
     }
 }
