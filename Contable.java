@@ -155,7 +155,7 @@ public class Contable extends Empleado
             Cliente cliente = getEstudio().getClientes().get(i);
             for(int j=0; j<cliente.getProyectos().size(); j++){
                 Proyecto proyectoAComparar = cliente.getProyectos().get(j);
-                if(proyectoAComparar.getId() == numero){
+                if(proyectoAComparar.getId().equals(numero)){
                     proyecto = proyectoAComparar;
                 }
             }
@@ -178,7 +178,7 @@ public class Contable extends Empleado
             Cliente cliente = getEstudio().getClientes().get(i);
             for(int j=0; j<cliente.getCertificados().size(); j++){
                 Certificado certificadoAComparar = cliente.getCertificados().get(j);
-                if(certificadoAComparar.getId() == numero){
+                if(certificadoAComparar.getId().equals(numero)){
                     certificado = certificadoAComparar;
                 }
             }

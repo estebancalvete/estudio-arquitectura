@@ -58,7 +58,7 @@ public class Administrador extends Empleado
                 empleado.setActivo();
                 getEstudio().addEmpleado(empleado);
                 printConfirmacionAlta();
-            }
+                }
         } else {
             printAdminNoSistema();
         }
@@ -87,18 +87,19 @@ public class Administrador extends Empleado
     /**
      * Baja de un empleado en el sistema
      * 
-     * @param empleado Empleado a dar de baja en el sistema
+     * @param numEmpleado Número de empleado a dar de baja en el sistema
      */
-    public void bajaEmpleado(Empleado empleado)
+    public void bajaEmpleado(String numEmpleado)
     {
         if(getEstudio() != null){
-            if(getEstudio().getEmpleados().contains(empleado)){
+            Empleado empleado = getEmpleado(numEmpleado);
+            if(empleado != null){
                 empleado.removeEstudio();
                 empleado.setInactivo();
                 getEstudio().removeEmpleado(empleado);
                 printConfirmacionBaja();
             } else {
-                printUsuarioNoSistema();
+                printEmpleadoNoEncontrado();
             }
         } else {
             printAdminNoSistema();
@@ -108,17 +109,16 @@ public class Administrador extends Empleado
     /**
      * Baja de un cliente en el sistema
      * 
-     * @param cliente Cliente a dar de baja en el sistema
+     * @param numeroCliente Número de cliente a dar de baja en el sistema
      */
-    public void bajaCliente(Cliente cliente)
+    public void bajaCliente(String numeroCliente)
     {
         if(getEstudio() != null){
-            if(getEstudio().getClientes().contains(cliente)){
+            Cliente cliente = getCliente(numeroCliente);
+            if(cliente != null){
                 cliente.setInactivo();
                 getEstudio().removeCliente(cliente);
                 printConfirmacionBaja();
-            } else {
-                printUsuarioNoSistema();
             }
         } else {
             printAdminNoSistema();
@@ -126,32 +126,76 @@ public class Administrador extends Empleado
     }
     
     /**
-     * Modificación de nombre del usuario
+     * Modificación de nombre del cliente
      * 
-     * @param persona Cliente o empleado al que se le modificará el nombre
-     * @param name Nuevo nombre del usuario
+     * @param numeroCliente Número del cliente al que se le modificará el nombre
+     * @param name Nuevo nombre del cliente
      */
-    public void modificaNombre(Persona persona, String name)
+    public void modificaNombreCliente(String numeroCliente, String name)
     {
         if(getEstudio() != null){
-            persona.setName(name);
-            printConfirmacionModificacion();
+            Cliente cliente = getCliente(numeroCliente);
+            if(cliente != null){
+                cliente.setName(name);
+                printConfirmacionModificacion();
+            }
         } else {
             printAdminNoSistema();
         }
     }
     
     /**
-     * Modificación de número de teléfono del usuario
+     * Modificación de nombre del empleado
      * 
-     * @param persona Cliente o empleado al que se le modificará el teléfono
-     * @param telefono Nuevo número de teléfono del usuario
+     * @param numeroEmpleado Número del empleado al que se le modificará el nombre
+     * @param name Nuevo nombre del empleado
      */
-    public void modificaTelefono(Persona persona, int telefono)
+    public void modificaNombreEmpleado(String numeroEmpleado, String name)
     {
         if(getEstudio() != null){
-            persona.setTelefono(telefono);
-            printConfirmacionModificacion();
+            Empleado empleado = getEmpleado(numeroEmpleado);
+            if(empleado != null){
+                empleado.setName(name);
+                printConfirmacionModificacion();
+            }
+        } else {
+            printAdminNoSistema();
+        }
+    }
+    
+    /**
+     * Modificación de número de teléfono del cliente
+     * 
+     * @param numeroCliente Número del cliente al que se le modificará el teléfono
+     * @param telefono Nuevo número de teléfono del cliente
+     */
+    public void modificaTelefonoCliente(String numeroCliente, int telefono)
+    {
+        if(getEstudio() != null){
+            Cliente cliente = getCliente(numeroCliente);
+            if(cliente != null){
+                cliente.setTelefono(telefono);
+                printConfirmacionModificacion();
+            }
+        } else {
+            printAdminNoSistema();
+        }
+    }
+    
+    /**
+     * Modificación de número de teléfono del empleado
+     * 
+     * @param numeroEmpleado Número de empleado al que se modificará el teléfono
+     * @param telefono Nuevo número de teléfono del empleado
+     */
+    public void modificaTelefonoEmpleado(String numeroEmpleado, int telefono)
+    {
+        if(getEstudio() != null){
+            Empleado empleado = getEmpleado(numeroEmpleado);
+            if(empleado != null){
+                empleado.setTelefono(telefono);
+                printConfirmacionModificacion();
+            }
         } else {
             printAdminNoSistema();
         }
@@ -161,22 +205,24 @@ public class Administrador extends Empleado
      * Asignación de empleados a un proyecto, el proyecto se considera contratado
      * 
      * @param numProyecto Número del proyecto al que se asignan los empleados
-     * @param arquitecto Arquitecto a añadir al proyecto
-     * @param aparejador Aparejador a añadir al proyecto
-     * @param contable Contable a añadir al proyecto
+     * @param numArquitecto Numero de empleado del arquitecto del proyecto
+     * @param numAparejador Numero de empleado del aparejador del proyecto
+     * @param numContable Numero de empleado del contable del proyecto
      */
     public void asignarEmpleadosProyecto(String numProyecto,
-                                         Arquitecto arquitecto,
-                                         Aparejador aparejador,
-                                         Contable contable)
+                                         String numArquitecto,
+                                         String numAparejador,
+                                         String numContable)
     {
         if(getEstudio() != null){
             Proyecto proyecto = getProyecto(numProyecto);
-            if(proyecto != null){
+            Arquitecto arquitecto = getArquitecto(numArquitecto);
+            Aparejador aparejador = getAparejador(numAparejador);
+            Contable contable = getContable(numContable);
+            if(proyecto != null && arquitecto != null && aparejador != null
+                                                            && contable != null){
                 proyecto.setEmpleadosProyecto(arquitecto, aparejador, contable);
                 printConfirmacionEmpleados();
-            } else {
-                printErrorProyecto();
             }
         } else {
             printAdminNoSistema();
@@ -187,23 +233,25 @@ public class Administrador extends Empleado
      * Asignación de empleados a un certificado
      * 
      * @param numCertificado Número del certificado al que se asignan empleados
-     * @param arquitecto Arquitecto a añadir al certificado
-     * @param aparejador Aparejador a añadir al certificado
-     * @param contable Contable a añadir al certificado
+     * @param numArquitecto Numero de empleado del arquitecto del certificado
+     * @param numAparejador Numero de empleado del aparejador del certificado
+     * @param numContable Numero de empleado del contable del certificado
      */
     public void asignarEmpleadosCertificado(String numCertificado,
-                                            Arquitecto arquitecto,
-                                            Aparejador aparejador,
-                                            Contable contable)
+                                            String numArquitecto,
+                                            String numAparejador,
+                                            String numContable)
     {
         if(getEstudio() != null){
             Certificado certificado = getCertificado(numCertificado);
-            if(certificado != null){
+            Arquitecto arquitecto = getArquitecto(numArquitecto);
+            Aparejador aparejador = getAparejador(numAparejador);
+            Contable contable = getContable(numContable);
+            if(certificado != null && arquitecto != null && aparejador != null
+                                                            && contable != null){
                 certificado.setEmpleadosCertificado(arquitecto, aparejador,
                                                     contable);
                 printConfirmacionEmpleados();
-            } else {
-                printErrorCertificado();
             }
         } else {
             printAdminNoSistema();
@@ -235,27 +283,35 @@ public class Administrador extends Empleado
      * Visualización de clientes por aquitecto asignado a su proyecto o
      * certificado
      * 
-     * @param arquitecto Arquitecto asignado a proyecto o certificado del cliente
+     * @param numArquitecto número de empleado del arquitecto
      */
-    public void VisualizarClientesPorAqruitecto(Arquitecto arquitecto)
+    public void VisualizarClientesPorAqruitecto(String numArquitecto)
     {
         if(getEstudio() != null){
-            System.out.println("Clientes asociados al arquitecto:");
-            System.out.println(arquitecto.getNumeroEmpleado() + ", "
-                               + arquitecto.getName());
-            System.out.println("-----------------------------------------------");
-            ArrayList<Cliente> clientes = getEstudio().getClientes();
-            for(int i=0; i<clientes.size(); i++){
-                ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
-                for(int j=0; j<proyectos.size(); j++){
-                    if(proyectos.get(j).getArquitecto() == arquitecto){
-                        printInfoCliente(clientes.get(i));
+            Arquitecto arquitecto = getArquitecto(numArquitecto);
+            if(arquitecto != null){
+                System.out.println("Clientes asociados al arquitecto:");
+                System.out.println(arquitecto.getNumeroEmpleado() + ", "
+                                   + arquitecto.getName());
+                System.out.println("------------------------------------------");
+                ArrayList<Cliente> clientes = getEstudio().getClientes();
+                for(int i=0; i<clientes.size(); i++){
+                    boolean imprimirCliente = false;
+                    ArrayList<Proyecto> proyectos = clientes.get(i)
+                                                                 .getProyectos();
+                    for(int j=0; j<proyectos.size(); j++){
+                        if(proyectos.get(j).getArquitecto() == arquitecto){
+                            imprimirCliente = true;
+                        }
                     }
-                }
-                ArrayList<Certificado> certificados = clientes.get(i)
-                                                          .getCertificados();
-                for(int j=0; j<certificados.size(); j++){
-                    if(certificados.get(j).getArquitecto() == arquitecto){
+                    ArrayList<Certificado> certificados = clientes.get(i)
+                                                              .getCertificados();
+                    for(int j=0; j<certificados.size(); j++){
+                        if(certificados.get(j).getArquitecto() == arquitecto){
+                            imprimirCliente = true;
+                        }
+                    }
+                    if(imprimirCliente){
                         printInfoCliente(clientes.get(i));
                     }
                 }
@@ -269,27 +325,35 @@ public class Administrador extends Empleado
      * Visualización de clientes por aparejador asignado a su proyecto o
      * certificado
      * 
-     * @param aparejador Aparejador asignado a proyecto o certificado del cliente
+     * @param numAparejador Número de empleado del aparejador
      */
-    public void VisualizarClientesPorAparejador(Aparejador aparejador)
+    public void VisualizarClientesPorAparejador(String numAparejador)
     {
         if(getEstudio() != null){
-            System.out.println("Clientes asociados al aparejador:");
-            System.out.println(aparejador.getNumeroEmpleado() + ", "
-                               + aparejador.getName());
-            System.out.println("-----------------------------------------------");
-            ArrayList<Cliente> clientes = getEstudio().getClientes();
-            for(int i=0; i<clientes.size(); i++){
-                ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
-                for(int j=0; j<proyectos.size(); j++){
-                    if(proyectos.get(j).getAparejador() == aparejador){
-                        printInfoCliente(clientes.get(i));
+            Aparejador aparejador = getAparejador(numAparejador);
+            if(aparejador != null){
+                System.out.println("Clientes asociados al aparejador:");
+                System.out.println(aparejador.getNumeroEmpleado() + ", "
+                                   + aparejador.getName());
+                System.out.println("------------------------------------------");
+                ArrayList<Cliente> clientes = getEstudio().getClientes();
+                for(int i=0; i<clientes.size(); i++){
+                    boolean imprimirCliente = false;
+                    ArrayList<Proyecto> proyectos = clientes.get(i)
+                                                                .getProyectos();
+                    for(int j=0; j<proyectos.size(); j++){
+                        if(proyectos.get(j).getAparejador() == aparejador){
+                            imprimirCliente = true;
+                        }
                     }
-                }
-                ArrayList<Certificado> certificados = clientes.get(i)
-                                                          .getCertificados();
-                for(int j=0; j<certificados.size(); j++){
-                    if(certificados.get(j).getAparejador() == aparejador){
+                    ArrayList<Certificado> certificados = clientes.get(i)
+                                                              .getCertificados();
+                    for(int j=0; j<certificados.size(); j++){
+                        if(certificados.get(j).getAparejador() == aparejador){
+                            imprimirCliente = true;
+                        }
+                    }
+                    if(imprimirCliente){
                         printInfoCliente(clientes.get(i));
                     }
                 }
@@ -352,21 +416,178 @@ public class Administrador extends Empleado
     /**
      * Visualización de proyectos y certificados por vivienda
      */
-    public void printProyectosCertificadosPorVivienda()
+    public void visualizarProyectosCertificadosPorVivienda()
     {
-        //
+        if(getEstudio() != null){
+            for(int i=0; i<getEstudio().getClientes().size(); i++){
+                ArrayList<Proyecto> proyectos = getEstudio().getClientes().get(i)
+                                                                .getProyectos();
+                for(int j=0; j<proyectos.size(); j++){
+                    Proyecto proyecto = proyectos.get(j);
+                    printInfoCertificados(proyecto);
+                }
+            }
+        } else {
+            printAdminNoSistema();
+        }
     }
     
     /**
      * Visualización de la planificación de ejecución de obras, a partir de los
      * proyectos contratados en un momento determinado
      */
-    public void printPlanificacionObras()
+    public void visualizarPlanificacionObras()
     {
-        //
+        if(getEstudio() != null){
+            ArrayList<Proyecto> proyectosEnEjecucion = new ArrayList<Proyecto>();
+            for(int i=0; i<getEstudio().getClientes().size(); i++){
+                ArrayList<Proyecto> proyectos = getEstudio().getClientes().get(i)
+                                                                .getProyectos();
+                for(int j=0; j<proyectos.size(); j++){
+                    Proyecto proyecto = proyectos.get(j);
+                    if(proyecto.getFechaInicioObra() != null && proyecto.getFinalizado() == false){
+                        proyectosEnEjecucion.add(proyecto);
+                    }
+                }
+            }
+            if(proyectosEnEjecucion.size() > 0){
+                System.out.println("Proyectos en ejecución:");
+                for(int i=0; i<proyectosEnEjecucion.size(); i++){
+                    Proyecto proyecto = proyectosEnEjecucion.get(i);
+                    printProyectosEnEjecucion(proyecto);
+                }
+            }
+        } else {
+            printAdminNoSistema();
+        }
     }
     
     // MARK - Métodos privados
+    /**
+     * Función auxiliar de obtención de arquitecto a partir del número de
+     * empleado
+     * 
+     * @param numeroEmpleado String de número de empleado, por ejemplo "EMP-3"
+     * 
+     * @return Arquitecto correspondiente al número de empleado introducido
+     */
+    private Arquitecto getArquitecto(String numeroEmpleado)
+    {
+        Arquitecto arquitecto = null;
+        for(int i=0; i<getEstudio().getEmpleados().size(); i++){
+            Empleado empleadoAComparar = getEstudio().getEmpleados().get(i);
+            if(empleadoAComparar.getNumeroEmpleado().equals(numeroEmpleado)){
+                if(empleadoAComparar.getTipoEmpleado().equals("Arquitecto")){
+                    arquitecto = (Arquitecto) empleadoAComparar;
+                } else {
+                    printEmpleadoNoEsArquitecto();
+                }
+            }
+        }
+        if(arquitecto == null){
+            printEmpleadoNoEncontrado();
+        }
+        return arquitecto;
+    }
+    
+    /**
+     * Función auxiliar de obtención de aparejador a partir del número de
+     * empleado
+     * 
+     * @param numeroEmpleado String de número de empleado, por ejemplo "EMP-3"
+     * 
+     * @return Aparejador correspondiente al número de empleado introducido
+     */
+    private Aparejador getAparejador(String numeroEmpleado)
+    {
+        Aparejador aparejador = null;
+        for(int i=0; i<getEstudio().getEmpleados().size(); i++){
+            Empleado empleadoAComparar = getEstudio().getEmpleados().get(i);
+            if(empleadoAComparar.getNumeroEmpleado().equals(numeroEmpleado)){
+                if(empleadoAComparar.getTipoEmpleado().equals("Aparejador")){
+                    aparejador = (Aparejador) empleadoAComparar;
+                } else {
+                    printEmpleadoNoEsAparejador();
+                }
+            }
+        }
+        if(aparejador == null){
+            printEmpleadoNoEncontrado();
+        }
+        return aparejador;
+    }
+    
+    /**
+     * Función auxiliar de obtención de contable a partir del número de
+     * empleado
+     * 
+     * @param numeroEmpleado String de número de empleado, por ejemplo "EMP-3"
+     * 
+     * @return Contable correspondiente al número de empleado introducido
+     */
+    private Contable getContable(String numeroEmpleado)
+    {
+        Contable contable = null;
+        for(int i=0; i<getEstudio().getEmpleados().size(); i++){
+            Empleado empleadoAComparar = getEstudio().getEmpleados().get(i);
+            if(empleadoAComparar.getNumeroEmpleado().equals(numeroEmpleado)){
+                if(empleadoAComparar.getTipoEmpleado().equals("Contable")){
+                    contable = (Contable) empleadoAComparar;
+                } else {
+                    printEmpleadoNoEsContable();
+                }
+            }
+        }
+        if(contable == null){
+            printEmpleadoNoEncontrado();
+        }
+        return contable;
+    }
+    
+    /**
+     * Función auxiliar de obtención de cliente a partir del número de cliente
+     * 
+     * @param numeroCliente String de número de cliente, por ejemplo "CLI-3"
+     * 
+     * @return Cliente correspondiente al número de cliente introducido
+     */
+    private Cliente getCliente(String numeroCliente)
+    {
+        Cliente cliente = null;
+        for(int i=0; i<getEstudio().getClientes().size(); i++){
+            Cliente clienteAComparar = getEstudio().getClientes().get(i);
+            if(clienteAComparar.getNumeroCliente().equals(numeroCliente)){
+                cliente = clienteAComparar;
+            } 
+        }
+        if(cliente == null){
+            printClienteNoEncontrado();
+        }
+        return cliente;
+    }
+    
+    /**
+     * Función auxiliar de obtención de empleado a partir del número de empleado
+     * 
+     * @param numeroEmpleado String de número de cliente, por ejemplo "EMP-3"
+     * 
+     * @return Empleado correspondiente al número de empleado introducido
+     */
+    private Empleado getEmpleado(String numeroEmpleado)
+    {
+        Empleado empleado = null;
+        for(int i=0; i<getEstudio().getEmpleados().size(); i++){
+            Empleado empleadoAComparar = getEstudio().getEmpleados().get(i);
+            if(empleadoAComparar.getNumeroEmpleado().equals(numeroEmpleado)){
+                empleado = empleadoAComparar;
+            }
+        }
+        if(empleado == null){
+            printEmpleadoNoEncontrado();
+        }
+        return empleado;
+    }
+    
     /**
      * Función auxiliar de obtención de proyecto a partir del número de proyecto
      * 
@@ -381,10 +602,13 @@ public class Administrador extends Empleado
             Cliente cliente = getEstudio().getClientes().get(i);
             for(int j=0; j<cliente.getProyectos().size(); j++){
                 Proyecto proyectoAComparar = cliente.getProyectos().get(j);
-                if(proyectoAComparar.getId() == numero){
+                if(proyectoAComparar.getId().equals(numero)){
                     proyecto = proyectoAComparar;
                 }
             }
+        }
+        if(proyecto == null){
+            printProyectoNoEncontrado();
         }
         return proyecto;
     }
@@ -404,10 +628,13 @@ public class Administrador extends Empleado
             Cliente cliente = getEstudio().getClientes().get(i);
             for(int j=0; j<cliente.getCertificados().size(); j++){
                 Certificado certificadoAComparar = cliente.getCertificados().get(j);
-                if(certificadoAComparar.getId() == numero){
+                if(certificadoAComparar.getId().equals(numero)){
                     certificado = certificadoAComparar;
                 }
             }
+        }
+        if(certificado == null){
+            printCertificadoNoEncontrado();
         }
         return certificado;
     }
@@ -445,7 +672,7 @@ public class Administrador extends Empleado
         ArrayList<Certificado> certificados = proyecto.getCertificados();
         ArrayList<Certificado> certs = new ArrayList<Certificado>();
         for(int i=0; i<certificados.size(); i++){
-            if(certificados.get(i).getTipo() == "Habitabilidad"){
+            if(certificados.get(i).getTipo().equals("Habitabilidad")){
                 certs.add(certificados.get(i));
             }
         }
@@ -481,15 +708,6 @@ public class Administrador extends Empleado
     private void printUsuarioYaSistema()
     {
         System.out.println("El usuario ya estaba dado de alta en el sistema.");
-    }
-    
-    /**
-     * Método privado de impresión de mensaje de error de usuario no dado de
-     * alta en el sistema
-     */
-    private void printUsuarioNoSistema()
-    {
-        System.out.println("El usuario no estaba dado de alta en el sistema.");
     }
     
     /**
@@ -555,7 +773,7 @@ public class Administrador extends Empleado
         if(proyecto.getFechaEntregaObra() != null){
             Date fecha = proyecto.getFechaEntregaObra();
             System.out.println("Fecha de entrega de obra: "
-                               + fecha.getDay() + "/" + fecha.getMonth() + "/"
+                               + fecha.getDate() + "/" + fecha.getMonth() + "/"
                                + fecha.getYear());
         } else {
             System.out.println("Fecha de entrega de obra aún no asignada");
@@ -580,7 +798,7 @@ public class Administrador extends Empleado
         System.out.println("Nombre de proyecto: " + cliente.getName());
         System.out.println("Número de certificao: " + certificado.getId());
         System.out.println("Fecha de último certificado de habitabilidad:");
-        System.out.println(fechaEmision.getDay() + "/" + fechaEmision.getMonth()
+        System.out.println(fechaEmision.getDate() + "/" + fechaEmision.getMonth()
                            + "/" + fechaEmision.getYear());
         System.out.println("---------------------------------------------------");
     }
@@ -604,6 +822,53 @@ public class Administrador extends Empleado
     }
     
     /**
+     * Método privado de impresión de información de proyecto residencial con la
+     * fecha de su último certificado de habitabilidad.
+     * 
+     * @param certificado Último certificado de habitabilidad de un proyecto dado
+     */
+    private void printInfoCertificados(Proyecto proyecto){
+        ArrayList<Certificado> certificados = proyecto.getCertificados();
+        System.out.println("Certificados del proyecto: " + proyecto.getId());
+        System.out.println();
+        if(certificados.size() == 0){
+            System.out.println("No existen certificados para este proyecto");
+            System.out.println("------------------------------------------");
+        } else {
+            for(int i=0; i<certificados.size(); i++){
+                Certificado certificado = certificados.get(i);
+                System.out.println("Número certificado: " + certificado.getId());
+                System.out.println("Tipo certificado: " + certificado.getTipo());
+                if(certificado.getEntregado()){
+                    System.out.println("Fecha expedición:");
+                    Date fecha = certificado.getFechaEmision();
+                    System.out.println(fecha.getDate() + "/" + fecha.getMonth()
+                                       + "/" + fecha.getYear());
+                } else {
+                    System.out.println("Certificado aún no emitido");
+                }
+                System.out.println("------------------------------------------");
+            }
+        }
+    }
+    
+    /**
+     * Método privado de impresión de información básica de proyecto en ejecución
+     * 
+     * @param proyecto Proyecto cuyos datos se imprimirán
+     */
+    private void printProyectosEnEjecucion(Proyecto proyecto)
+    {
+        System.out.println("Proyecto número: " + proyecto.getId());
+        Date fecha = proyecto.getFechaInicioObra();
+        System.out.println("Fecha de inicio:" + fecha.getDate() + "/" +
+                           fecha.getMonth() + "/" + fecha.getYear());
+        System.out.println("Duración prevista: " + proyecto.getDuracionPrevista()
+                           + " meses");
+        System.out.println("---------------------------------------------------");
+    }
+    
+    /**
      * Printer de confirmación de empleados asignados con éxito
      */
     private void printConfirmacionEmpleados()
@@ -614,15 +879,58 @@ public class Administrador extends Empleado
     /**
      * Printer de error de proyecto no encontrado
      */
-    private void printErrorProyecto()
+    private void printProyectoNoEncontrado()
     {
         System.out.println("No se ha encontrado proyecto con el número indicado");
     }
     
     /**
+     * Printer de error de empleado no encontrado
+     */
+    private void printEmpleadoNoEncontrado()
+    {
+        System.out.println("No se ha encontrado empleado con el número indicado");
+    }
+    
+    /**
+     * Printer de error de cliente no encontrado
+     */
+    private void printClienteNoEncontrado()
+    {
+        System.out.println("No se ha encontrado cliente con el número indicado");
+    }
+    
+    /**
+     * Printer de error de empleado no es arquitecto
+     */
+    private void printEmpleadoNoEsArquitecto()
+    {
+        System.out.println("No se ha podido realizar la gestión porque el");
+        System.out.println("empleado indicado no es arquitecto");
+    }
+    
+    /**
+     * Printer de error de empleado no es aparejador
+     */
+    private void printEmpleadoNoEsAparejador()
+    {
+        System.out.println("No se ha podido realizar la gestión porque el");
+        System.out.println("empleado indicado no es aparejador");
+    }
+    
+    /**
+     * Printer de error de empleado no es contable
+     */
+    private void printEmpleadoNoEsContable()
+    {
+        System.out.println("No se ha podido realizar la gestión porque el");
+        System.out.println("empleado indicado no es contable");
+    }
+    
+    /**
      * Printer de error de certificado no encontrado
      */
-    private void printErrorCertificado()
+    private void printCertificadoNoEncontrado()
     {
         System.out.println("No se ha encontrado certificado con el num. indicado");
     }

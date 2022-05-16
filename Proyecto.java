@@ -99,6 +99,26 @@ public class Proyecto
     }
     
     /**
+     * Getter de fecha de inicio de obra
+     * 
+     * @return Date indicativo de la fecha de inicio de obra
+     */
+    public Date getFechaInicioObra()
+    {
+        return fechaInicioObra;
+    }
+    
+    /**
+     * Getter de duración prevista de obra
+     * 
+     * @return Número de meses previstos de ejecución de obra
+     */
+    public int getDuracionPrevista()
+    {
+        return duracionPrevista;
+    }
+    
+    /**
      * Getter del nombre de proyecto
      * 
      * @return String con el nombre del proyecto
@@ -166,16 +186,6 @@ public class Proyecto
     public Date getFechaEntregaProyecto()
     {
         return fechaEntregaProyecto;
-    }
-    
-    /**
-     * Getter de fecha de inicio de obra
-     * 
-     * @return Objeto Date de fecha de inicio de obra
-     */
-    public Date getFechaInicioObra()
-    {
-        return fechaInicioObra;
     }
     
     /**

@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 /**
  * La clase Aparejador modela los aparejadores del estudio de arquitectura y
  * hereda de la clase Empleado.
@@ -43,9 +43,16 @@ public class Aparejador extends Empleado
                 } else {
                     if(proyecto.getFechaEntregaProyecto() != null){
                         if(duracion > 0){
-                            proyecto.setFechaInicioObra(year, month, day);
-                            proyecto.setDuracionPrevista(duracion);
-                            printConfirmacion();
+                            ArrayList<Proyecto> proyectosEnEjecucion =
+                                                    getProyectosEnEjecucion();
+                            if(proyectosEnEjecucion == null ||
+                                            proyectosEnEjecucion.size() < 3){
+                                proyecto.setFechaInicioObra(year, month, day);
+                                proyecto.setDuracionPrevista(duracion);
+                                printConfirmacion();
+                            } else {
+                                printErrorProyectosActivos();
+                            }
                         } else {
                             printErrorDuracion();
                         }
@@ -121,6 +128,64 @@ public class Aparejador extends Empleado
         }
     }
     
+    /**
+     * Función de visualización por pantalla de los datos de los clientes
+     * asociados
+     */
+    public void visualizarDatosClientesAsociados()
+    {
+        if(getEstudio() != null) {
+            ArrayList<Proyecto> proyectosAsignados = new ArrayList<Proyecto>();
+            ArrayList<Certificado> certificadosAsignados = new
+                                                        ArrayList<Certificado>();
+            ArrayList<Cliente> clientes = getEstudio().getClientes();
+            if(clientes.size() == 0){
+                System.out.println("Usted aún no tiene ningún cliente asociado");
+            }
+            for(int i=0; i<clientes.size(); i++){
+                ArrayList<Proyecto> proyectos = getEstudio().getClientes()
+                                                        .get(i).getProyectos();
+                proyectosAsignados = getProyectosAsignados(proyectos);
+                ArrayList<Certificado> certificados = getEstudio().getClientes()
+                                                        .get(i).getCertificados();
+                certificadosAsignados = getCertificadosAsignados(certificados);
+                printDatosProyectoAsignado(proyectosAsignados);
+                printDatosCertificadoAsignado(certificadosAsignados);
+            }
+        } else {
+            printAparejadorNoSistema();
+        }
+    }
+    
+    /**
+     * Función de visualización por pantalla de las visitas pendientes para la
+     * emisión de certificados
+     */
+    public void visualizarVisitasPendientesCertificados()
+    {
+        if(getEstudio() != null) {
+            ArrayList<Cliente> clientes = getEstudio().getClientes();
+            ArrayList<Certificado> certificadosAsignados = new
+                                                        ArrayList<Certificado>();
+            if(clientes.size() == 0){
+                System.out.println("Usted aún no tiene ningún cliente asociado");
+            }
+            for(int i=0; i<clientes.size(); i++){
+                ArrayList<Certificado> certificados = getEstudio().getClientes()
+                                                       .get(i).getCertificados();
+                certificadosAsignados = getCertificadosAsignados(certificados);
+                for(int j=0; j< certificadosAsignados.size(); j++){
+                    Certificado certificado = certificadosAsignados.get(j);
+                    if(certificado.getFechaVisitaAparejador() == null){
+                        printCertificadoPendiente(certificado);
+                    }
+                }
+            }
+        } else {
+            printAparejadorNoSistema();
+        }
+    }
+    
     // MARK - Métodos privados
     /**
      * Función auxiliar de obtención de proyecto a partir del número de proyecto
@@ -136,12 +201,34 @@ public class Aparejador extends Empleado
             Cliente cliente = getEstudio().getClientes().get(i);
             for(int j=0; j<cliente.getProyectos().size(); j++){
                 Proyecto proyectoAComparar = cliente.getProyectos().get(j);
-                if(proyectoAComparar.getId() == numero){
+                if(proyectoAComparar.getId().equals(numero)){
                     proyecto = proyectoAComparar;
                 }
             }
         }
         return proyecto;
+    }
+    
+    /**
+     * Función auxiliar de obtención de proyectos activos
+     * 
+     * @return ArrayList de proyectos en estado de ejecuión
+     */
+    private ArrayList<Proyecto> getProyectosEnEjecucion()
+    {
+        ArrayList<Proyecto> proyectosEnEjecucion = null;
+        ArrayList<Cliente> clientes = getEstudio().getClientes();
+        for(int i=0; i<clientes.size(); i++){
+            ArrayList<Proyecto> proyectos = clientes.get(i).getProyectos();
+            for(int j=0; j<proyectos.size(); j++){
+                Proyecto proyecto = proyectos.get(j);
+                if(proyecto.getFechaInicioObra() != null &&
+                                            proyecto.getFinalizado() == false){
+                    proyectosEnEjecucion.add(proyecto);
+                }
+            }
+        }
+        return proyectosEnEjecucion;
     }
     
     /**
@@ -158,13 +245,110 @@ public class Aparejador extends Empleado
         for(int i=0; i<getEstudio().getClientes().size(); i++){
             Cliente cliente = getEstudio().getClientes().get(i);
             for(int j=0; j<cliente.getCertificados().size(); j++){
-                Certificado certificadoAComparar = cliente.getCertificados().get(j);
-                if(certificadoAComparar.getId() == numero){
+                Certificado certificadoAComparar = cliente.getCertificados()
+                                                                        .get(j);
+                if(certificadoAComparar.getId().equals(numero)){
                     certificado = certificadoAComparar;
                 }
             }
         }
         return certificado;
+    }
+    
+    /**
+     * Función auxiliar de retorno de ArrayList de proyectos asignados a partir
+     * de un ArrayList de proyectos
+     * 
+     * @param proyectos ArrayList de proyectos
+     * 
+     * @return ArrayList de proyectos asignados
+     */
+    private ArrayList<Proyecto> getProyectosAsignados(ArrayList<Proyecto>
+                                                                        proyectos)
+    {
+        ArrayList<Proyecto> asignados = new ArrayList<Proyecto>();
+        for(int i=0; i<proyectos.size(); i++){
+            Proyecto proyecto = proyectos.get(i);
+            if(proyecto.getAparejador() == this){
+                asignados.add(proyecto);
+            }
+        }
+        return asignados;
+    }
+    
+    /**
+     * Función auxiliar de retorno de ArrayList de certificados asignados a partir
+     * de un ArrayList de certificados
+     * 
+     * @param certificados ArrayList de certificados
+     * 
+     * @return ArrayList de certificados asignados
+     */
+    private ArrayList<Certificado> getCertificadosAsignados(ArrayList<Certificado>
+                                                                     certificados)
+    {
+        ArrayList<Certificado> asignados = new ArrayList<Certificado>();
+        for(int i=0; i<certificados.size(); i++){
+            Certificado certificado = certificados.get(i);
+            if(certificado.getAparejador() == this){
+                asignados.add(certificado);
+            }
+        }
+        return asignados;
+    }
+    
+    /**
+     * Printer de datos de clientes con proyecto asignado
+     */
+    private void printDatosProyectoAsignado(ArrayList<Proyecto> proyectos)
+    {
+        System.out.println("Proyectos asignados:");
+        System.out.println("-----------------------------------------------");
+        for(int i=0; i<proyectos.size(); i++){
+            Proyecto proyecto = proyectos.get(i);
+            Cliente cliente = proyecto.getCliente();
+            if(proyecto.getFinalizado()){
+                System.out.println("Proyecto ya finalizado:");
+            } else {
+                System.out.println("Proyecto aún en ejecución:");
+            }
+            System.out.println("Número Proyecto: " + proyecto.getId());
+            System.out.println("Nombre Proyecto: " + proyecto.getNombre());
+            System.out.println("Número Cliente: " + cliente.getNumeroCliente());
+            System.out.println("Nombre Cliente: " + cliente.getName());
+            System.out.println("-----------------------------------------------");
+        }
+    }
+    
+    /**
+     * Printer de datos de clientes con certificado asignado
+     */
+    private void printDatosCertificadoAsignado(ArrayList<Certificado> certificados)
+    {
+        System.out.println("Certificados asignados:");
+        System.out.println("-----------------------------------------------");
+        for(int i=0; i<certificados.size(); i++){
+            Certificado certificado = certificados.get(i);
+            Cliente cliente = certificado.getCliente();
+            Proyecto proyecto = certificado.getProyecto();
+            System.out.println("Número Certificado: " + certificado.getId());
+            System.out.println("Tipo Certificado: " + certificado.getTipo());
+            System.out.println("Número Proyecto: " + proyecto.getId());
+            System.out.println("Nombre Proyecto: " + proyecto.getNombre());
+            System.out.println("Número Cliente: " + cliente.getNumeroCliente());
+            System.out.println("Nombre Cliente: " + cliente.getName());
+            System.out.println("-----------------------------------------------");
+        }
+    }
+    
+    /**
+     * Printer de datos de certificado pendiente de vistita de aparejador
+     */
+    private void printCertificadoPendiente(Certificado certificado)
+    {
+        System.out.println("Certificado número: " + certificado.getId());
+        System.out.println("pendiente de visita.");
+        System.out.println("-----------------------------------------------");
     }
     
     /**
@@ -234,5 +418,14 @@ public class Aparejador extends Empleado
     private void printErrorCertificado()
     {
         System.out.println("No se ha encontrado certificado con el num. indicado");
+    }
+    
+    /**
+     * Printer de error de máximo número de proyectos activos
+     */
+    private void printErrorProyectosActivos()
+    {
+        System.out.println("No se puede iniciar la obra porque el estudio ya ha");
+        System.out.println("alcanzado el número máximo de proyectos activos.");
     }
 }

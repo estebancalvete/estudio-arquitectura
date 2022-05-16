@@ -139,20 +139,32 @@ public class Cliente extends Persona
      * @param year Año de solicitud del certificado
      * @param month Mes de solicitud del certificado
      * @param day Día de solicitud del certificado
-     * @param residencial Proyecto residencial asociado al certificado
+     * @param numProyecto Número de proyecto residencial asociado al certificado
      */
     public void solicitarCertificadoHabitabilidad(int year,
                                                   int month,
                                                   int day,
-                                                  Residencial residencial)
+                                                  String numProyecto)
     {
         if(getActivo() == true){
-            Habitabilidad habitabilidad = new Habitabilidad(year, month, day,
-                residencial);
-            habitabilidad.setCliente(this);
-            certificados.add(habitabilidad);
-            residencial.addCertificado(habitabilidad);
-            printConfiracionSolicitudCertificado(habitabilidad);
+            Proyecto proyecto = getProyecto(numProyecto);
+            if(proyecto != null){
+                if(proyecto.getEsResidencial()){
+                    Residencial residencial = (Residencial) proyecto;
+                    Habitabilidad habitabilidad = new Habitabilidad(year,
+                                                                    month,
+                                                                    day,
+                                                                    residencial);
+                    habitabilidad.setCliente(this);
+                    certificados.add(habitabilidad);
+                    residencial.addCertificado(habitabilidad);
+                    printConfiracionSolicitudCertificado(habitabilidad);
+                } else {
+                    printProyectoTipoErroneo();
+                }
+            } else {
+                printProyectoNoEncontrado();
+            }
         } else {
             printErrorAlta();
         }
@@ -164,22 +176,28 @@ public class Cliente extends Persona
      * @param year Año de solicitud del certificado
      * @param month Mes de solicitud del certificado
      * @param day Día de solicitud del certificado
-     * @param proyecto Proyecto comunitario asociado al certificado
+     * @param numProyecto Número de proyecto comunitario asociado al certificado
      */
     public void solicitarCertificadoInspeccionTecnica(int year,
                                                       int month,
                                                       int day,
-                                                      Proyecto proyecto)
+                                                      String numProyecto)
     {
         if(getActivo() == true){
-            if(proyecto.getComunitario() == true){
-                InspeccionTecnica inspeccionTecnica = new InspeccionTecnica(year,
-                    month, day, proyecto);
-                inspeccionTecnica.setCliente(this);
-                certificados.add(inspeccionTecnica);
-                printConfiracionSolicitudCertificado(inspeccionTecnica);
+            Proyecto proyecto = getProyecto(numProyecto);
+            if(proyecto != null){
+                if(proyecto.getComunitario()){
+                    InspeccionTecnica inspeccionTecnica =
+                              new InspeccionTecnica(year, month, day, proyecto);
+                    inspeccionTecnica.setCliente(this);
+                    proyecto.addCertificado(inspeccionTecnica);
+                    certificados.add(inspeccionTecnica);
+                    printConfiracionSolicitudCertificado(inspeccionTecnica);
+                } else {
+                    printProyectoTipoErroneo();
+                }
             } else {
-                printErrorNoComunitario();
+                printProyectoNoEncontrado();
             }
         } else {
             printErrorAlta();
@@ -192,19 +210,25 @@ public class Cliente extends Persona
      * @param year Año de solicitud del certificado
      * @param month Mes de solicitud del certificado
      * @param day Día de solicitud del certificado
-     * @param proyecto Proyecto arquitectónico asociado al certificado
+     * @param numProyecto Número de proyecto asociado al certificado
      */
     public void solicitarCertificadoEficiencia(int year,
                                                int month,
                                                int day,
-                                               Proyecto proyecto)
+                                               String numProyecto)
     {
         if(getActivo() == true){
-            Eficiencia eficiencia = new Eficiencia(year,
+            Proyecto proyecto = getProyecto(numProyecto);
+            if(proyecto != null){
+                Eficiencia eficiencia = new Eficiencia(year,
                     month, day, proyecto);
-            eficiencia.setCliente(this);
-            certificados.add(eficiencia);
-            printConfiracionSolicitudCertificado(eficiencia);
+                eficiencia.setCliente(this);
+                proyecto.addCertificado(eficiencia);
+                certificados.add(eficiencia);
+                printConfiracionSolicitudCertificado(eficiencia);
+            } else {
+                printProyectoNoEncontrado();
+            }
         } else {
             printErrorAlta();
         }
@@ -216,19 +240,25 @@ public class Cliente extends Persona
      * @param year Año de solicitud del certificado
      * @param month Mes de solicitud del certificado
      * @param day Día de solicitud del certificado
-     * @param proyecto Proyecto arquitectónico asociado al informe pericial
+     * @param numProyecto Número de proyecto asociado al informe pericial
      */
     public void solicitarInformePericial(int year,
                                          int month,
                                          int day,
-                                         Proyecto proyecto)
+                                         String numProyecto)
     {
         if(getActivo() == true){
-            InformePericial informePericial = new InformePericial(year,
+            Proyecto proyecto = getProyecto(numProyecto);
+            if(proyecto != null){
+                InformePericial informePericial = new InformePericial(year,
                 month, day, proyecto);
-            informePericial.setCliente(this);
-            certificados.add(informePericial);
-            printConfiracionSolicitudCertificado(informePericial);
+                informePericial.setCliente(this);
+                proyecto.addCertificado(informePericial);
+                certificados.add(informePericial);
+                printConfiracionSolicitudCertificado(informePericial);
+            } else {
+                printProyectoNoEncontrado();
+            }
         } else {
             printErrorAlta();
         }
@@ -266,6 +296,26 @@ public class Cliente extends Persona
     
     // MARK - Métodos privados
     /**
+     * Función auxiliar de obtención de proyecto a partir de número de proyecto
+     * 
+     * @param numProyecto Número de proyecto
+     * 
+     * @return Proyecto correspondiente a número indicado
+     */
+    private Proyecto getProyecto(String numProyecto)
+    {
+        Proyecto proyecto = null;
+        proyectos = getProyectos();
+        for(int i=0; i<proyectos.size(); i++){
+            if(proyectos.get(i).getId().equals(numProyecto) &&
+                                            proyectos.get(i).getEsResidencial()){
+                proyecto = proyectos.get(i);
+            }
+        }
+        return proyecto;
+    }
+    
+    /**
      * Printer de confirmación de solicitud de proyecto
      */
     private void printConfiracionSolicitudProyecto(Proyecto proyecto)
@@ -290,7 +340,7 @@ public class Cliente extends Persona
     }
     
     /**
-     * Printer de error de cliente no dado de alta en el estudio.
+     * Printer de error de cliente no dado de alta en el estudio
      */
     private void printErrorAlta()
     {
@@ -302,14 +352,18 @@ public class Cliente extends Persona
     }
     
     /**
-     * Printer de error de proyecto no comunitario.
+     * Printer de error de proyecto no comunitario
      */
-    private void printErrorNoComunitario()
+    private void printProyectoNoEncontrado()
     {
-        System.out.println("---------------------------------------------------");
-        System.out.println("No se ha podido procesar su solicitud porque");
-        System.out.println("este proyecto no es comunitario y por tanto");
-        System.out.println("no se le aplica este tipo de certificado.");
-        System.out.println("---------------------------------------------------");
+        System.out.println("No se ha encontrado ningún proyecto con este número");
+    }
+    
+    /**
+     * Printer de error de pryecto de tipo erroneo
+     */
+    private void printProyectoTipoErroneo()
+    {
+        System.out.println("El proyecto indicado no es del tipo apropiado");
     }
 }
