@@ -124,7 +124,7 @@ public class Estudio
         empleados.remove(empleado);
     }
     
-    // MARK - Métodos públicos
+    // MARK - Métodos privados
     /**
      * Método de creación de ejemplo de histórico de clientes, empleados,
      * proyectos y certificados de ejemplo para ayudar a en la corrección

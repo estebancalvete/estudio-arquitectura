@@ -132,7 +132,7 @@ public class Aparejador extends Empleado
      * Función de visualización por pantalla de los datos de los clientes
      * asociados
      */
-    public void visualizarDatosClientesAsociados()
+    public void visualizarDatosClientesAsignados()
     {
         if(getEstudio() != null) {
             ArrayList<Proyecto> proyectosAsignados = new ArrayList<Proyecto>();

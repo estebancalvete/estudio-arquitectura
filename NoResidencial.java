@@ -36,6 +36,4 @@ public class NoResidencial extends Proyecto
         this.supEdificio = supEdificio;
         this.finalidad = finalidad;
     }
-    
-    // MARK - Métodos públicos
 }

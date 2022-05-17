@@ -261,7 +261,7 @@ public class Administrador extends Empleado
     /**
      * Visualización de datos de todas las personas registradas en el sistema
      */
-    public void VisualizarPersonasRegistradas()
+    public void visualizarPersonasRegistradas()
     {
         if(getEstudio() != null){
             System.out.println("Empleados:");
@@ -285,7 +285,7 @@ public class Administrador extends Empleado
      * 
      * @param numArquitecto número de empleado del arquitecto
      */
-    public void VisualizarClientesPorAqruitecto(String numArquitecto)
+    public void visualizarClientesPorAqruitecto(String numArquitecto)
     {
         if(getEstudio() != null){
             Arquitecto arquitecto = getArquitecto(numArquitecto);
@@ -327,7 +327,7 @@ public class Administrador extends Empleado
      * 
      * @param numAparejador Número de empleado del aparejador
      */
-    public void VisualizarClientesPorAparejador(String numAparejador)
+    public void visualizarClientesPorAparejador(String numAparejador)
     {
         if(getEstudio() != null){
             Aparejador aparejador = getAparejador(numAparejador);

@@ -24,6 +24,4 @@ public class InformePericial extends Certificado
     {
         super(year, month, day, proyecto, "Informe Pericial");
     }
-    
-    // MARK - Métodos públicos
 }

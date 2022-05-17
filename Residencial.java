@@ -43,8 +43,4 @@ public class Residencial extends Proyecto
         this.noHabitaciones = noHabitaciones;
         this.noBanos = noBanos;
     }
-    
-    // MARK - Métodos públicos
-        
-
 }

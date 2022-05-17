@@ -29,6 +29,4 @@ public class Rehabilitacion extends Proyecto
         super(nombre, year, month, day, direccion, esComunitario, false);
         this.supReformar = supReformar;
     }
-    
-    // MARK - Métodos públicos
 }
